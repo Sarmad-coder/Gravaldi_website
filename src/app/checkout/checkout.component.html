@@ -1,0 +1,410 @@
+<div class="container main">
+  <div class="row" *ngIf="loader">
+    <div class="col-md-12 text-center my-5">
+      <i class="fa fa-spin fa-spinner fa-2x"></i> <br />
+    </div>
+  </div>
+
+  <div class="row" *ngIf="cartProducts?.length > 0 && !loader">
+    <div class="col-12 mb-2">
+      <h4>Checkout</h4>
+      <hr />
+    </div>
+    <!--Left Side-->
+    <div class="col-md-8">
+      <p *ngIf="!user">
+        Already have an account -
+        <span
+          (click)="openModal()"
+          style="text-decoration: underline; cursor: pointer"
+          >Login Here</span
+        >
+      </p>
+      <p *ngIf="user">
+        Hi {{ user?.firstName }}, not {{ user?.firstName }} ?
+        <span
+          (click)="logout()"
+          style="text-decoration: underline; cursor: pointer"
+          >Sign Out</span
+        >
+      </p>
+      <h4>BILLING DETAILS</h4>
+      <form>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="firstname">First Name <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.firstName == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="firstName"
+              id="firstname"
+              [(ngModel)]="billingDetails.firstName"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.firstName == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="lastName">Last Name <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.lastName == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="lastName"
+              id="lastName"
+              [(ngModel)]="billingDetails.lastName"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.lastName == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="form-group col-md-12">
+            <label for="email">Email address <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.email == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="email"
+              id="email"
+              [(ngModel)]="billingDetails.email"
+              placeholder="Enter email address"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.email == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="form-group col-md-12">
+            <label for="address1">Street Address 1 <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.address1 == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="address1"
+              id="address1"
+              [(ngModel)]="billingDetails.address1"
+              placeholder="Apartment, Suite, Unit Etc. "
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.address1 == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="form-group col-md-12">
+            <label for="address2">Street Name <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.streetName == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="address2"
+              id="address2"
+              placeholder="Street Name"
+              [(ngModel)]="billingDetails.streetName"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.streetName == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="city">Town / City <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.city == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="city"
+              id="city"
+              [(ngModel)]="billingDetails.city"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.city == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="zip">Postcode / Zip <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.zip == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="zip"
+              id="zip"
+              [(ngModel)]="billingDetails.zip"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.zip == ''"
+            >
+              Field is required
+            </p>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="country">Country <sup>*</sup> </label>
+            <select
+              id="country"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.country == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="country"
+              class="form-control"
+              [(ngModel)]="billingDetails.country"
+            >
+              <option
+                *ngFor="let item of countries; index as i"
+                value="{{ item?.country?.name }}"
+              >
+                {{ item?.country?.name }}
+              </option>
+            </select>
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.country == ''"
+            >
+              Field is required
+            </p>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="Phone Number">Phone Number <sup>*</sup> </label>
+            <input
+              type="text"
+              class="form-control"
+              [ngStyle]="{
+                border:
+                  invalidFormatte && billingDetails.city == ''
+                    ? '1px solid red'
+                    : ''
+              }"
+              name="Phone Number"
+              id="Phone Number"
+              [(ngModel)]="billingDetails.phone"
+            />
+            <p
+              id="requiredFields"
+              *ngIf="invalidFormatte && billingDetails.phone == ''"
+            >
+              Field is required
+            </p>
+          </div>
+          <div class="col-md-12">
+            <label>Enter Card Details <sup>*</sup> </label>
+            <ngx-stripe-card
+              [options]="cardOptions"
+              [elementsOptions]="elementsOptions"
+            ></ngx-stripe-card>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!--Right Side-->
+    <div class="col-md-4">
+      <div class="right-side">
+        <div class="row">
+          <div class="col-12">
+            <p class="font-weight-bolder text-primary mb-0">ORDER DETAILS</p>
+          </div>
+        </div>
+        <hr />
+        <div class="row mb-2" *ngFor="let item of cartProducts; index as i">
+          <div class="col-md-4">
+            <img
+              *ngIf="item?.image"
+              src="{{ baseUrl }}/{{ item?.image }}"
+              id="cartProductImage"
+              alt=""
+            />
+            <img
+              *ngIf="!item?.image"
+              src="{{ baseUrl }}/{{ item?.images[0] }}"
+              id="cartProductImage"
+              alt=""
+            />
+          </div>
+          <div class="col-md-6">
+            <h6>{{ item?.name }}</h6>
+            <h6><b>Size:</b> {{ item.size?.fit }}</h6>
+
+            <!-- <span *ngIf="item.productInfo?.monogram">
+              <b>Monogram: I:</b>{{item.productInfo?.initials }}
+              <b>S:</b> {{ item.productInfo?.style_summary }}
+              <b>C:</b> {{ item.productInfo?.color_summary }}
+              <b>P:</b> {{ item.productInfo?.placement_summary }}
+            </span> -->
+          </div>
+          <div class="col-md-2">
+            <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+            <span style="font-size: 12px">x</span>
+            <span>{{ item?.qty }}</span>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-4">
+            <p class="font-weight-bolder text-primary mb-0">SUBTOTAL</p>
+          </div>
+          <div class="col-8">
+            <p class="font-weight-bolder text-primary mb-0">${{ subtotal }}</p>
+          </div>
+
+          <div class="col-4" *ngIf="isCoupanExist">
+            <p class="font-weight-bolder text-primary mb-0">Coupon</p>
+          </div>
+          <div class="col-8" *ngIf="isCoupanExist">
+            <span class="font-weight-bolder text-primary mb-0"
+              >${{ getCoupan?.discount }}</span
+            >
+          </div>
+
+          <div class="col-4" *ngIf="isCoupanExist">
+            <p class="font-weight-bolder text-primary mb-0">Type</p>
+          </div>
+          <div class="col-8" *ngIf="isCoupanExist">
+            <p class="font-weight-bolder text-primary mb-0">
+              {{ getCoupan?.discountIs }}
+            </p>
+          </div>
+
+          <div class="col-4">
+            <p class="font-weight-bolder text-primary mb-0">SHIPPING</p>
+          </div>
+          <div class="col-8">
+            <p class="font-weight-bolder text-primary mb-0">
+              ${{ shippingAmount }}
+            </p>
+          </div>
+
+          <div class="col-4">
+            <p class="font-weight-bolder text-primary mb-0">TOTAL</p>
+          </div>
+          <div class="col-8">
+            <p class="font-weight-bolder text-primary mb-0">
+              ${{ finalAmount }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn form-control mt-4 btn-primary"
+        *ngIf="!orderLoader && !abletoReview"
+        (click)="pay()"
+      >
+        PLACE ORDER
+      </button>
+
+      <button
+        type="submit"
+        class="btn form-control mt-4 btn-secondary"
+        *ngIf="orderLoader"
+      >
+        <img src="../../assets/rolling.gif" alt="" id="rolling" />
+        ORDER IN PROCESSING
+      </button>
+    </div>
+  </div>
+
+  <div class="row justify-content-center" *ngIf="abletoReview">
+    <div class="col-md-4">
+      <form>
+        <div class="row">
+          <div class="form-group col-12 col-md-12 text-center">
+            <ngb-rating
+              [rate]="0"
+              name="starRating"
+              [(ngModel)]="review.star"
+            ></ngb-rating>
+          </div>
+          <div class="form-group col-12 col-md-12">
+            <textarea
+              name="desc"
+              class="form-control comment"
+              (keyup)="checkCommentdesc()"
+              [(ngModel)]="review.comment"
+            ></textarea>
+          </div>
+          <span *ngIf="commentLength" id="commentLength"
+            >Minimum 10 character required.</span
+          >
+
+          <div class="form-group col-12 col-md-12 text-right">
+            <input
+              type="submit"
+              class="btn btn-primary text-right"
+              [disabled]="review.comment.length < 10 || review.star == 0"
+              value="Send"
+              (click)="updateRating()"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="cartProducts?.length == undefined && !loader">
+    <div class="card emptyCart">
+      <div class="card-body text-center">
+        <img src="../../../assets/empty-cart.png" alt="" />
+        <p><b>Your cart is empty</b></p>
+        <p>Add something to make me happy:)</p>
+        <button class="btn btn-primary" routerLink="/productlist">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,278 @@
+<div class="container main" *ngIf="!loading">
+  <div class="col-md-12 p-0">
+    <div class="row">
+      <div class="col-12 col-md-12">
+        <h4>SHOP</h4>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between brd">
+      <div id="active-filters">
+        <div id="condition" *ngIf="skipObj?.style?.length > 0">
+          <p id="tag" *ngFor="let item of skipObj?.style; index as i">
+            {{ item }}
+            <span id="bin" (click)="remove_filter('style', i)"> &#10005; </span>
+          </p>
+        </div>
+
+        <div id="condition" *ngIf="skipObj?.fabric?.length > 0">
+          <p id="tag" *ngFor="let item of skipObj?.fabric; index as i">
+            {{ item }}
+            <span id="bin" (click)="remove_filter('fabric', i)">
+              &#10005;
+            </span>
+          </p>
+        </div>
+
+        <div id="condition" *ngIf="skipObj?.patterns?.length > 0">
+          <p id="tag" *ngFor="let item of skipObj?.patterns; index as i">
+            {{ item }}
+            <span id="bin" (click)="remove_filter('patterns', i)">
+              &#10005;
+            </span>
+          </p>
+        </div>
+
+        <div id="condition" *ngIf="skipObj?.colors.length > 0">
+          <p id="tag" *ngFor="let item of skipObj?.colors; index as i">
+            {{ item }}
+            <span id="bin" (click)="remove_filter('colors', i)">
+              &#10005;
+            </span>
+          </p>
+        </div>
+
+        <p id="clear_All" *ngIf="clearShow()" (click)="clearAll()">Clear All</p>
+      </div>
+
+      <div>
+        <div class="dropdown float-right">
+          <a class="" (click)="dropdown = !dropdown" style="color: gray" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" style="text-decoration: none; cursor: pointer">
+            <strong style="color: black">Sort:</strong>
+            {{ skipObj.filter }}&nbsp; &nbsp; &nbsp;
+            <i *ngIf="dropdown == false" class="fas fa-arrow-up"></i>
+            <i *ngIf="dropdown == true" class="fas fa-arrow-down"></i>
+          </a>
+          <div class="dropdown-menu py-3 px-3" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-item form-check">
+              <input class="form-check-input" value="New Arrival" [(ngModel)]="skipObj.filter" (change)="serachOnFilter()" type="radio"
+                name="flexRadioDefault" id="flexRadioDefault1" />
+              <label class="form-check-label" for="flexRadioDefault1">
+                New Arrival
+              </label>
+            </div>
+            <div class="dropdown-item form-check">
+              <input class="form-check-input" value="Most Relevant" [(ngModel)]="skipObj.filter" (change)="serachOnFilter()" type="radio"
+                name="flexRadioDefault" id="flexRadioDefault2" />
+              <label class="form-check-label" for="flexRadioDefault2">
+                Most Relevant
+              </label>
+            </div>
+            <div class="dropdown-item form-check">
+              <input class="form-check-input" value="Low To High" [(ngModel)]="skipObj.filter" (change)="serachOnFilter()" type="radio"
+                name="flexRadioDefault" id="flexRadioDefault3" />
+              <label class="form-check-label" for="flexRadioDefault3">
+                Price (Low To High)
+              </label>
+            </div>
+            <div class="dropdown-item form-check">
+              <input class="form-check-input" value="Hight To Low" [(ngModel)]="skipObj.filter" (change)="serachOnFilter()" type="radio"
+                name="flexRadioDefault" id="flexRadioDefault4" />
+              <label class="form-check-label" for="flexRadioDefault4">
+                Price (Hight To Low)
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-4 col-md-3 col-lg-2 p-0">
+      <sidenav class="d-inline-flex bg-light" style="width: 100%; background: white !important">
+        <div class="sidenav-inner mb-2">
+          <sidenav-menu text="Style">
+            <ul id="style_ul">
+              <li *ngFor="let item of ProductStyles; index as i" (click)="productStyle(i)"
+                [ngClass]="item?.selected == true ? 'appliedFilter' : ''">
+                <a>
+                  <i class="fas fa-circle"></i>
+                  <span>{{ item?.obj?.title }}</span>
+                </a>
+              </li>
+            </ul>
+          </sidenav-menu>
+
+          <sidenav-menu text="Colors">
+            <div class="row colorRow">
+              <div *ngFor="let item of ProductColors;index as i"
+                class="{{item?.selected == true ? 'colorOuterEnable' : 'colorOuterDisable'}}" (click)="productColor(i)">
+                <div title="{{item?.obj?.title}}" class="text-center align-item-center colorBackground"
+                  [ngStyle]="{'background': item?.obj?.webValue}">
+                </div>
+              </div>
+            </div>
+          </sidenav-menu>
+
+          <sidenav-menu text="Patterns">
+            <ul id="style_ul">
+              <li *ngFor="let item of ProductPatterns; index as i" (click)="productPatterns(i)"
+                [ngClass]="item?.selected == true ? 'appliedFilter' : ''">
+                <a>
+                  <i class="fas fa-circle"></i>
+                  <span>{{ item?.obj?.title }}</span>
+                </a>
+              </li>
+            </ul>
+          </sidenav-menu>
+
+          <sidenav-menu text="Fabric">
+            <ul id="style_ul">
+              <li *ngFor="let item of ProductFabrics; index as i" (click)="productFabrics(i)"
+                [ngClass]="item?.selected == true ? 'appliedFilter' : ''">
+                <a>
+                  <i class="fas fa-circle"></i>
+                  <span>{{ item?.obj?.title }}</span>
+                </a>
+              </li>
+            </ul>
+          </sidenav-menu>
+        </div>
+      </sidenav>
+    </div>
+
+    <div class="col-12 col-sm-8 col-md-9 col-lg-10">
+      <p *ngIf="allProductList?.length < 1" style="font-size: 20px; text-align: center">
+        No Data
+      </p>
+
+      <div class="row contentArea" infiniteScroll (scrolled)="onScroll()">
+
+
+
+        <!-- <h1>check kr raha ahyujnn</h1> -->
+        <div class="column" *ngFor="let item of allProductList">
+          <a routerLink="/productdetail/{{ item?._id }}">
+            <img *ngIf="item?.image != null" [src]="item.imageSource ? item.imageSource : baseUrl + '/' + item.image"
+              (mouseover)="item.imageSource = baseUrl + '/' + item.previewImage"
+              (mouseout)="item.imageSource = baseUrl + '/' + item.image" />
+            <!-- <img *ngIf="item?.image != null" (hover)="" src="{{ baseUrl }}/{{ item?.image }}" alt="..." /> -->
+            <img *ngIf="!item?.image" src="../../../assets/favicon_bigsize.png" class="noProdImage" alt="..." />
+            <div class="product__text">
+              <p title="{{ item?.name }}" class="product__title">
+                {{ item?.name }}
+              </p>
+              <p class="product__price">
+                <span *ngIf="
+                    item?.price !== '' &&
+                      item?.price !== undefined &&
+                      item?.price !== '';
+                    null
+                  ">
+                  ${{ item?.price }}
+                </span>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between" style="margin: 20px 0px" *ngIf="allProductList?.length > 0">
+        <!-- <div class="dropdown">
+          <button
+            class="btn dropdown-toggle bulkbutton"
+            *ngIf="countPrdd >= 20"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Per page {{ skipObj.perPage == 0 ? "All" : skipObj.perPage }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" (click)="changePerPage(20)">20</a>
+            <a class="dropdown-item" (click)="changePerPage(30)">30</a>
+            <a class="dropdown-item" (click)="changePerPage(40)">40</a>
+            <a class="dropdown-item" (click)="changePerPage(50)">50</a>
+            <a class="dropdown-item" (click)="changePerPage(0)">All</a>
+          </div>
+        </div>
+
+        <div *ngIf="skipObj.perPage > 0">
+          <span>
+            <nav id="pagination-nav">
+              <img
+                src="../../../assets/rolling.gif"
+                *ngIf="loading_secondary"
+                id="pagingLoader"
+                alt=""
+              />
+              <ul class="pagination">
+                <li
+                  class="page-item  {{
+                    skipObj.pageNumber == 0 ? 'disabled' : 'page-itemActive'
+                  }}"
+                  (click)="setPageNumber(0)"
+                >
+                  <a class="page-link">First</a>
+                </li>
+                <li
+                  class="page-item {{
+                    skipObj.pageNumber == 0 ? 'disabled' : 'page-itemActive'
+                  }}"
+                  (click)="setPageNumber(skipObj.pageNumber - 1)"
+                >
+                  <a class="page-link">
+                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                  </a>
+                </li>
+                <li
+                  *ngFor="let item of paginationArray; index as i"
+                  (click)="setPageNumber(item)"
+                  class="page-item {{
+                    item == this.skipObj.pageNumber
+                      ? 'activePage'
+                      : 'page-itemActive'
+                  }}"
+                >
+                  <a class="page-link">{{ item + 1 }}</a>
+                </li>
+                <li
+                  class="page-item {{
+                    skipObj.pageNumber == paegsnum - 1
+                      ? 'disabled'
+                      : 'page-itemActive'
+                  }}"
+                  (click)="setPageNumber(skipObj.pageNumber + 1)"
+                >
+                  <a class="page-link">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                  </a>
+                </li>
+                <li
+                  class="page-item {{
+                    skipObj.pageNumber == paegsnum - 1
+                      ? 'disabled'
+                      : 'page-itemActive'
+                  }}"
+                  (click)="setPageNumber(paegsnum - 1)"
+                >
+                  <a class="page-link">Last</a>
+                </li>
+              </ul>
+            </nav>
+          </span>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!--loading-->
+<div class="row" *ngIf="loading">
+  <div class="col-md-12 col-12 text-center">
+    <i class="fa fa-spin fa-spinner fa-2x pageLoader"></i>
+  </div>
+</div>
+
+<app-layout-footer></app-layout-footer>

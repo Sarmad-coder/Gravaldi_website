@@ -1,0 +1,102 @@
+/*Third Tab of customize page for customize Size*/
+#sizeDiv {
+  #lftside {
+    padding: 0 12px 12px 12px;
+
+    #title {
+      color: grey;
+      font-size: 15px;
+      letter-spacing: 0.1rem;
+      font-weight: 500;
+      padding: 0px 10px;
+      margin: 12px 0px;
+    }
+  }
+
+  #rghsid {
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #e4e1e1;
+    padding: 18px 30px 18px 18px !important;
+
+    #title {
+      color: grey;
+      font-size: 15px;
+      letter-spacing: 0.1rem;
+      font-weight: 500;
+      padding: 0px 10px;
+      margin: 12px 0px;
+    }
+
+    .btn-same-name {
+      padding: 4px 12px;
+      margin: 0px;
+      font-size: 15px;
+    }
+
+    #meas_label a {
+      font-size: 11px !important;
+      text-transform: capitalize !important;
+      font-weight: 800 !important;
+      vertical-align: sub;
+    }
+
+    #meas_label a:hover {
+      text-decoration: underline;
+      cursor: help !important;
+    }
+
+    #valsid {
+      .sizeInput {
+        width: 75% !important;
+        background: #eceaea !important;
+        border: none;
+        border-radius: 4px !important;
+        height: 35px;
+        margin: 4px auto;
+        float: right;
+      }
+
+      .minus,
+      .plus {
+        width: 35px !important;
+        border: none;
+        border-radius: 4px !important;
+        height: 35px;
+        margin: 4px;
+        text-align: center;
+        padding: 0px;
+        font-weight: 800 !important;
+        // float: left;
+        background: #999;
+        color: white;
+      }
+
+      .plus:hover {
+        background: #333;
+        transition: 0s;
+      }
+
+      .minus:hover {
+        background: #333;
+        transition: 0s;
+      }
+    }
+  }
+}
+
+.ngneat-close-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  cursor: pointer;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  color: #5f6368;
+  transition: color 0.2s ease-in-out;
+  z-index: 1051;
+}

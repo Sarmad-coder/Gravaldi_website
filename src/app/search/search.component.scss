@@ -1,0 +1,307 @@
+.sumitButton {
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  z-index: 100;
+  font-size: 20px;
+  color: #b5b5b5;
+}
+
+.searchInput {
+  padding-left: 65px;
+}
+
+.brd {
+  border-bottom: 1px solid #dddddd !important;
+  padding: 0px 0px 10px 0px !important;
+  margin: 0px 0px 10px 0px !important;
+}
+
+#active-filters #condition {
+  display: flex;
+  float: left;
+}
+
+#active-filters #tag {
+  padding: 7px 10px;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #444;
+  font-weight: 300;
+  border-radius: 2rem;
+  margin-right: 5.33333333px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  transition: .05s ease;
+  margin: 0px 10px 0px 0px;
+}
+
+#active-filters #tag:hover {
+  background: #F1F1F1;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #000;
+  text-decoration: none;
+}
+
+#active-filters #tag #bin {
+  margin: 0px 0px 0px 20px;
+}
+
+#clear_All {
+  padding: 7px 10px;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #444;
+  font-weight: 300;
+  border-radius: 2rem;
+  margin-right: 5.33333333px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-transition: .05s ease;
+  transition: .05s ease;
+  margin: 0px 10px 0px 0px;
+}
+
+// Product Listing /*Start*/
+
+.contentArea {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+// Product Listing => column like bootstrap column
+.contentArea .column {
+  -ms-flex: 25%;
+  flex: 25%;
+  max-width: 25%;
+  padding: 0 10px;
+  margin: 5px 0px;
+  text-align: center;
+}
+
+// Product Listing => column Image tag styling
+.contentArea .column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  max-width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+// Product Listing => column bottom of product /*Price , Name etc*/
+.product__text {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.product__text a {
+  text-decoration: none;
+}
+
+.product__title {
+  margin: 0 auto 4px 0;
+  display: block;
+  font-weight: 300;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 90%;
+}
+
+.product__price {
+  display: block;
+  color: #757575;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+// Product Listing => column bottom of product /*Price , Name etc END*/
+
+
+
+
+// Filter Sidebar start from HERE
+//*Multiple filters based on Prod Color,Prod Style ,Prod fabric,Prod Pattern*
+
+
+sidenav-menu {
+  width: 100% !important;
+  padding: 0px !important;
+  background: white !important;
+  margin: 0px !important;
+
+  #style_ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+    li {
+      cursor: pointer;
+      padding: 4px 0px 4px 20px;
+
+      a {
+        color: #757575;
+        transition: all 0.5s ease;
+
+        .fa-circle {
+          font-size: 6px;
+          color: transparent;
+          position: relative;
+          right: 5px;
+          top: -4px;
+        }
+      }
+
+      a:hover {
+        color: #adadad;
+
+        .fa-circle {
+          font-size: 6px;
+          color: #cbcbcb !important;
+          position: relative;
+          right: 5px;
+          top: -4px;
+        }
+      }
+
+    }
+
+
+    .appliedFilter {
+      cursor: pointer;
+      padding: 4px 0px 4px 20px;
+
+      a {
+        color: #adadad;
+
+        .fa-circle {
+          color: #adadad !important;
+        }
+      }
+    }
+
+  }
+}
+
+.sidenav-link {
+  padding: 10px 0px !important;
+}
+
+.colorRow {
+  margin: 0px auto !important;
+  width: 100% !important;
+  padding: 0px 2px;
+}
+
+.colorRow .colorBackground {
+  height: 22px;
+  width: 22px;
+  border-radius: 50px;
+  margin: 2px;
+  float: left;
+  cursor: pointer;
+}
+
+.colorOuterDisable {
+  border: 1px solid rgb(255, 255, 255);
+  float: left;
+  border-radius: 50px;
+  margin: 2px;
+}
+
+.colorOuterEnable {
+  border: 1px solid rgb(37, 37, 37);
+  float: left;
+  border-radius: 50px;
+  margin: 2px;
+
+}
+
+.fa-arrow-up,
+.fa-arrow-down {
+  color: black;
+  cursor: pointer;
+}
+
+// pagination styling start from here
+#pagingLoader {
+  float: right;
+  display: flex;
+  width: 25px;
+  margin: 3px 20px;
+}
+
+#pagination-nav .pagination {
+  margin: 0px !important;
+}
+
+#pagination-nav .pagination .activePage {
+  background: black;
+  border-radius: 4px;
+  margin: 0px 0px 0px 3px;
+}
+
+#pagination-nav .pagination .activePage a {
+  color: white;
+}
+
+@media screen and (max-width: 1300px) {
+  .contentArea .column {
+    -ms-flex: 20%;
+    flex: 20%;
+    max-width: 20%;
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .contentArea .column {
+    -ms-flex: 25%;
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 10px;
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .contentArea .column {
+    -ms-flex: 33%;
+    flex: 33%;
+    max-width: 33%;
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .contentArea .column {
+    -ms-flex: 50%;
+    flex: 50%;
+    max-width: 50%;
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .contentArea .column {
+    -ms-flex: 100%;
+    flex: 100%;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+}

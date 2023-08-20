@@ -1,0 +1,275 @@
+.container-fluid {
+  background: #e8e8ea !important;
+  min-height: 100vh;
+
+  .main {
+    #title {
+      font-weight: 700;
+      margin: 10px 0px;
+    }
+
+    .order-summary {
+      background: #ffffff !important;
+      padding: 5px !important;
+      border-radius: 2px !important;
+
+      #header {
+        background: #f3f3f3;
+        padding: 0.75rem 1rem;
+        margin: 0 -0.5rem 0 -0.5rem;
+        width: auto;
+        font-size: 14px;
+        background: #f3f3f3;
+
+        p {
+          color: #757575;
+          font-weight: 400;
+          text-transform: uppercase;
+          font-size: 13px;
+          letter-spacing: 1.25px;
+          margin: 0px;
+        }
+      }
+
+      .rowForItem {
+        width: 100%;
+        padding: 0px;
+        margin: 10px 0px 20px 0px;
+        position: relative;
+        transition: 0.3s ease-in-out;
+        border-bottom: 1px solid silver;
+        min-height: 130px;
+
+        #productImage {
+          width: 96px;
+          min-width: 96px;
+          padding-top: 0;
+          object-fit: contain;
+          border-radius: 3px;
+          margin: 10px auto;
+          display: block;
+        }
+
+        #nameDescAction {
+          #prodName {
+            font-weight: 600;
+            font-size: 17px !important;
+            margin: 5px 0px;
+          }
+
+          #prodDesc {
+            font-size: 13px !important;
+          }
+        }
+
+        #qtyAction {
+
+          position: relative;
+          // top: 40px;
+          // left: auto;
+          // right: auto;
+          // height: auto;
+          // text-align: right;
+
+          .minusQty {
+            cursor: pointer;
+            padding: 13px 15px;
+            background: #c0c0c0;
+            color: white;
+            display: inline-flex;
+            border-radius: 2px;
+          }
+
+          .plusQty {
+            cursor: pointer;
+            padding: 13px 15px;
+            background: #c0c0c0;
+            color: white;
+            display: inline-flex;
+            border-radius: 2px;
+          }
+
+          .minusQty:hover {
+            background: #333333;
+          }
+
+          .plusQty:hover {
+            background: #333333;
+          }
+
+
+          #qtyValue {
+            display: block;
+            width: 100%;
+            text-align: right;
+            margin: 10px 0px;
+            text-align: right;
+
+            #que {
+              color: #7e7e7e;
+            }
+
+            #ans {
+              color: #646464;
+            }
+          }
+        }
+
+        #price-section {
+          #unit_price {
+            display: inline-block;
+          }
+
+          #qty_price {
+            display: inline-block;
+          }
+        }
+      }
+
+      .rowForItem:hover {
+        box-shadow: rgba(218, 217, 217, 0.3) 0px 2px 8px 0px;
+      }
+
+      #removeItem {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        color: silver;
+        font-weight: 100 !important;
+      }
+
+    }
+
+    .emptyCart {
+      width: 95%;
+      margin: 20px auto 150px !important;
+    }
+
+    .emptyCart img {
+      width: 100px;
+    }
+
+    #calculation_rightside {
+      background: #ffffff !important;
+      border-radius: 3px;
+      padding: 10px;
+
+      #ord-summary {
+        background: #131313;
+        color: white;
+        padding: 10px;
+        margin: 3px auto;
+        border-radius: 3px;
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 14px;
+        text-align: center;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        border: 1px solid #131313;
+        width: 100%;
+        display: block;
+        transition: 0.3s ease-in-out;
+      }
+
+      #ord-summary:hover {
+        background: transparent;
+        color: black !important;
+        border-image: conic-gradient(rgb(131, 131, 131), rgb(49, 49, 49), rgb(0, 0, 0)) 1;
+      }
+
+      .div-detail {
+        margin: 20px 0px 0px 0px;
+
+        p {
+          margin: 0px;
+        }
+      }
+    }
+
+    .checkoutBtn {
+      background: #131313;
+      color: white;
+      padding: 10px;
+      margin: 20px auto;
+      border-radius: 3px;
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      border: 1px solid #131313;
+      width: 100%;
+      display: block;
+      transition: 0.3s ease-in-out;
+    }
+
+    .continueBtn {
+      background: #131313;
+      color: white;
+      padding: 10px;
+      margin: 20px auto;
+      border-radius: 3px;
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      border: 1px solid #131313;
+      width: 100%;
+      display: block;
+      transition: 0.3s ease-in-out;
+    }
+
+    .continueBtn:hover {
+      background: transparent;
+      color: black !important;
+      border-radius: 3px;
+      border-image: conic-gradient(rgb(131, 131, 131), rgb(49, 49, 49), rgb(0, 0, 0)) 1;
+    }
+
+    .checkoutBtn:hover {
+      background: transparent;
+      color: black !important;
+      border-radius: 3px;
+      border-image: conic-gradient(rgb(131, 131, 131), rgb(49, 49, 49), rgb(0, 0, 0)) 1;
+    }
+
+    .emptyCart {
+      margin: 215px auto !important;
+
+      .text {
+        letter-spacing: 0.8px;
+        font-size: 17px;
+      }
+
+      .backToShop {
+        color: white;
+        padding: 10px;
+        margin: 30px auto;
+        border-radius: 3px;
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 14px;
+        text-align: center;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        border: 1px solid #131313;
+        width: 145px;
+        display: block;
+        transition: 0.3s ease-in-out;
+      }
+    }
+  }
+
+  .pageLoader {
+    text-align: center;
+    margin: 50vh auto;
+    display: block;
+  }
+
+}

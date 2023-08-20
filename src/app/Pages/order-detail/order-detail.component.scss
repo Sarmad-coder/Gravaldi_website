@@ -1,0 +1,37 @@
+// * {
+//     color: black ;
+// }
+.cdg {
+  color: rgb(158, 154, 154) !important;
+}
+
+.bb-lightgrey {
+  border-bottom: 6px solid rgb(158, 154, 154) !important;
+}
+
+.bb-transparent {
+  border-bottom: 6px solid transparent !important;
+}
+
+.table-borderless tr * {
+  vertical-align: middle;
+}
+
+.border2px {
+  border: 2px solid rgb(158, 154, 154) !important;
+}
+
+.bb-2px {
+  border-bottom: 2px solid rgb(158, 154, 154) !important;
+}
+
+.bt-1px {
+  border-top: 1px solid rgb(158, 154, 154) !important;
+}
+
+#productImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 2px;
+  object-fit: cover;
+}

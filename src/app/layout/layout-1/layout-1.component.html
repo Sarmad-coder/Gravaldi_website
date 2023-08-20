@@ -1,0 +1,31 @@
+<div class="layout-wrapper layout-1" [ngClass]="{'layout-loading': !initialized}">
+  <div class="layout-inner" style="overflow-y: hidden;">
+    <app-layout-navbar></app-layout-navbar>
+
+    <div class="layout-container" style="background-color: white;">
+      <div class="layout-content">
+        <div class="router-transitions flex-grow-1 ">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="layout-overlay" (click)="closeSidenav()"></div>
+<!-- <div class="layout-wrapper layout-1" [ngClass]="{'layout-loading': !initialized}">
+  <div class="layout-inner">
+    <app-layout-navbar></app-layout-navbar>
+
+    <div class="layout-container" style="background: white;">
+      <div class="layout-content">
+        <div class="router-transitions flex-grow-1">
+          <div class="container-fluid px-1 px-lg-5 my-3 my-sm-4">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+        <app-layout-footer></app-layout-footer>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="layout-overlay" (click)="closeSidenav()"></div> -->

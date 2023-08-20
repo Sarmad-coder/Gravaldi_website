@@ -1,0 +1,172 @@
+<div class="row mx-5 my-3">
+  <div class="col-12 mb-2">
+    <h4 class="font-weight-semibold text-primary">
+      <i
+        class="fas fa-long-arrow-alt-left fa-2x cursor-pointer"
+        routerLink="/account"
+      ></i>
+    </h4>
+    <hr />
+  </div>
+
+  <div class="col-md-8 col-lg-9 pl-md-5 mt-md-0 my-3">
+    <h4 class="font-weight-bolder text-primary mb-4">
+      Order Numbers
+      <span class="ml-5"
+        >#{{ order?.prefixAccountNumber
+        }}{{ order?.postfixAccountNumber }}</span
+      >
+    </h4>
+    <div class="table-responsive-xl text-primary border2px px-3">
+      <table class="table table-borderless my-2">
+        <thead>
+          <tr>
+            <th style="width: 50%">Product Summary</th>
+            <th>QTY</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="order">
+          <!-- <tr *ngFor="let item of orders;index as i" class="bt-1px"> -->
+          <tr>
+            <td>
+              <img
+                src="{{ baseUrl }}/{{ order?.product?.image }}"
+                ngxViewer
+                id="productImage"
+              />
+              <span>{{ order?.product?.name }}</span>
+            </td>
+            <td>X {{ order.quantity }}</td>
+            <td>$ {{ order?.price }}</td>
+          </tr>
+          <tr>
+            <td>
+              <h3>Style</h3>
+              <button class="btn mb-1">
+                <b>Shirt Fit:</b> {{ order.shirtFit }}
+              </button>
+              <button class="btn mb-1">
+                <b>Bottom Style:</b> {{ order.bottomStyle }}
+              </button>
+              <button class="btn mb-1">
+                <b>Collar:</b> {{ order.collar }}
+              </button>
+              <button class="btn mb-1"><b>Cuffs:</b> {{ order.cuffs }}</button>
+              <button class="btn mb-1">
+                <b>Placket:</b> {{ order.placket }}
+              </button>
+              <button class="btn mb-1"><b>Back:</b> {{ order.back }}</button>
+              <button class="btn mb-1">
+                <b>Pocket:</b> {{ order.pocket }}
+              </button>
+              <button class="btn mb-1">
+                <b>Interlining:</b> {{ order.interlining }}
+              </button>
+              <button class="btn mb-1">
+                <b>Inner Contrast:</b> {{ order.innerContrast }}
+              </button>
+              <button class="btn mb-1">
+                <b>Button:</b> {{ order.button }}
+              </button>
+            </td>
+            <td colspan="2">
+              <h3>Size Details</h3>
+              <div
+                [innerHTML]="order?.measurement | fetchMeasurement | async"
+              ></div>
+            </td>
+          </tr>
+          <!-- </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <div class="p-3" style="background-color: #f4f4f4">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+          <p class="font-weight-bolder text-primary mb-0">ORDER SUMMARY</p>
+          <p class="font-weight-bolder text-danger mb-0">Pending</p>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">SUBTOTAL</p>
+        </div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">
+            $ {{ order?.product.price * order?.quantity }}.00
+          </p>
+        </div>
+        <div class="col-12 my-1"></div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">SHIPPING</p>
+        </div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">$0.00</p>
+        </div>
+        <div class="col-12 my-1"></div>
+        <div class="col-6" *ngIf="order?.coupan">
+          <p class="font-weight-bolder text-primary mb-0">DISCOUNT</p>
+        </div>
+        <div class="col-6" *ngIf="order?.coupan">
+          <p class="font-weight-bolder text-primary mb-0">
+            ${{ order?.coupan?.discount }}
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">TOTAL</p>
+        </div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">
+            ${{ order?.price }}.00
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="p-3 mt-3" style="background-color: #f4f4f4">
+      <div class="row">
+        <div class="col-12">
+          <p class="font-weight-bolder text-primary mb-0">DELIVERY ADDRESS</p>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">STREET NAME</p>
+        </div>
+        <div class="col-6">
+          <small>{{ order?.billingdetail?.streetName }}</small>
+        </div>
+        <div class="col-12 my-1"></div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">ADDRESS</p>
+        </div>
+        <div class="col-6">
+          <small>{{ order?.billingdetail?.address1 }}</small>
+        </div>
+        <div class="col-12 my-1"></div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">CITY</p>
+        </div>
+        <div class="col-6">
+          <small>{{ order?.billingdetail?.city }}</small>
+        </div>
+        <div class="col-12 my-1"></div>
+        <div class="col-6">
+          <p class="font-weight-bolder text-primary mb-0">POSTAL CODE</p>
+        </div>
+        <div class="col-6">
+          <small>{{ order?.billingdetail?.zip }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-layout-footer></app-layout-footer>

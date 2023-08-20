@@ -1,0 +1,238 @@
+<div class="container-fluid">
+  <div class="container main">
+    <ng-container *ngIf="!loader">
+      <div class="row" *ngIf="cartProducts?.length > 0">
+        <div class="col-md-12">
+          <h4 id="title">Cart</h4>
+        </div>
+
+        <!--left side (Products * cart Items) -->
+        <div class="col-12 col-md-8 col-lg-8">
+          <div class="order-summary">
+            <div class="row">
+              <div class="col-12 col-md-12">
+                <div id="header">
+                  <p>CUSTOM SHIRTS</p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="row rowForItem"
+              *ngFor="let item of cartProducts; index as i"
+            >
+              <div class="col-sm-4 col-md-3 col-lg-2">
+                <img
+                  src="{{ baseUrl }}/{{ item?.image }}"
+                  *ngIf="item?.image"
+                  id="productImage"
+                />
+                <img
+                  src="{{ baseUrl }}/{{ item?.images[0] }}"
+                  *ngIf="!item?.image"
+                  id="productImage"
+                />
+                <!-- <img
+                  src="../../../assets/favicon.png"
+                  *ngIf="!item?.image"
+                  id="productImage"
+                /> -->
+                <img
+                  src="../../../assets/favicon.png"
+                  *ngIf="!item?.image && item?.images.length == 0"
+                  id="productImage"
+                />
+              </div>
+
+              <div class="col-sm-8 col-md-9 col-lg-10 w-100 p-3">
+                <div
+                  class=""
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div id="nameDescAction">
+                    <p
+                      id="prodName"
+                      title="{{ item.name }}"
+                      *ngIf="item?.name.length > 100"
+                    >
+                      {{ item?.name.substr(0, 100) }} ...
+                    </p>
+                    <p id="prodName" *ngIf="item?.name.length < 100">
+                      {{ item?.name }}
+                    </p>
+
+                    <p id="prodDesc" *ngIf="item?.description.length > 200">
+                      {{ item?.description.substr(0, 200) }} ...
+                    </p>
+                    <p id="prodDesc" *ngIf="item?.description.length < 200">
+                      {{ item?.description }}
+                    </p>
+                    <p>
+                      <b>Size:</b> {{ item.size?.fit }} <br /><span
+                        *ngIf="item.productInfo?.monogram"
+                        ><b>Monogram: I:</b> {{ item.productInfo?.initials }}
+                        <b>S:</b> {{ item?.productInfo?.style_summary }}
+                        <b>C:</b> {{ item?.productInfo?.color_summary }}
+                        <b>P:</b> {{ item?.productInfo?.placement_summary }}
+                      </span>
+                    </p>
+
+                    <div
+                      *ngIf="item?.price"
+                      placement="top"
+                      ngbTooltip="Total Price"
+                    >
+                      ${{ addMongogramPrice(item) }}
+                    </div>
+                  </div>
+
+                  <div style="align-self: self-end">
+                    <div id="qtyAction" style="white-space: nowrap;">
+                      <span class="minusQty" (click)="minusQty(i)">
+                        <i class="fa fa-minus"></i>
+                      </span>
+                      <span class="plusQty" (click)="addQty(i)">
+                        <i class="fa fa-plus"></i>
+                      </span>
+                    </div>
+                    <div id="qtyValue" class="mt-1">
+                      <span id="que">Qty:</span>
+                      <span id="ans"> {{ item?.qty }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <i id="removeItem" class="fa fa-close" (click)="remove(i)"></i>
+            </div>
+
+            <div
+              class="row justify-content-center my-5"
+              *ngIf="cartProducts?.length >= 1"
+            >
+              <div class="mr-2">
+                <form autocomplete="off">
+                  <div class="form-group">
+                    <label class="form-label"></label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      autocomplete="off"
+                      [disabled]="isCoupanExist"
+                      name="code"
+                      placeholder="Discount Codes"
+                      [(ngModel)]="coupanObj.code"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="mt-3">
+                <button
+                  type="button"
+                  class="btn btn-primary form-control mt-1"
+                  [disabled]="isCoupanExist"
+                  (click)="applyCoupan()"
+                >
+                  APPLY
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--right side (cart Items calculation (qty, price,coupan,shipping price etc)) -->
+        <div class="col-12 col-md-4 col-lg-4">
+          <div class="row" id="calculation_rightside">
+            <p id="ord-summary">ORDER SUMMARY</p>
+
+            <!--subtotal-->
+            <div class="d-flex justify-content-between w-100 div-detail">
+              <div>
+                <p>Subtotal</p>
+              </div>
+              <div>
+                <p>${{ subtotal }}</p>
+              </div>
+            </div>
+
+            <!--coupan-->
+            <div
+              class="d-flex justify-content-between w-100 div-detail"
+              *ngIf="isCoupanExist"
+            >
+              <div>
+                <p>Coupon</p>
+              </div>
+              <div>
+                <span>${{ getCoupan?.discount }}</span>
+                <i
+                  class="fa fa-trash-o"
+                  aria-hidden="true"
+                  (click)="deleteCoupan()"
+                  placement="top"
+                  ngbTooltip="Delete Coupan"
+                ></i>
+              </div>
+            </div>
+
+            <!--shipping-->
+            <div class="d-flex justify-content-between w-100 div-detail">
+              <div>
+                <p>Shipping</p>
+              </div>
+              <div>
+                <p>${{ shippingAmount }}</p>
+              </div>
+            </div>
+
+            <!--total-->
+            <div class="d-flex justify-content-between w-100 div-detail">
+              <div>
+                <p><b>Total</b></p>
+              </div>
+              <div>
+                <p>${{ finalAmount }}</p>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary checkoutBtn"
+            routerLink="/checkout"
+          >
+            CHECKOUT
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary continueBtn"
+            routerLink="/productlist"
+          >
+            CONTINUE SHOPPING
+            <i
+              class="fas fa-long-arrow-alt-right fa-2x float-right"
+              style="line-height: 0.8"
+            ></i>
+          </button>
+        </div>
+      </div>
+      <div
+        class="row emptyCart"
+        *ngIf="cartProducts?.length == undefined || cartProducts?.length <= 0"
+      >
+        <div class="col-md-12 text-center">
+          <p class="text">Your shopping cart is empty.</p>
+          <button class="btn btn-primary backToShop" routerLink="/">
+            Back to Shop
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="row" *ngIf="loader">
+      <div class="col-md-12">
+        <i class="fa fa-spin fa-spinner fa-2x pageLoader"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-layout-footer></app-layout-footer> -->

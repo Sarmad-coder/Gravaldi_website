@@ -1,0 +1,481 @@
+<div class="container main">
+  <div class="row my-5" *ngIf="loader">
+    <div class="col-md-12 text-center my-5">
+      <i class="fa fa-spin fa-spinner fa-2x"></i> <br />
+    </div>
+  </div>
+  <div class="row" *ngIf="!loader">
+    <div class="col-12 mb-2">
+      <h4 class="font-weight-semibold text-primary">My Account</h4>
+      <hr />
+    </div>
+    <div class="col-md-4 col-lg-3">
+      <div class="p-3" style="background-color: #f4f4f4">
+        <div
+          class="d-flex justify-content-between cursor-pointer"
+          (click)="selectedMenu = 'ACCOUNT DETAILS'"
+        >
+          <p
+            class="font-weight-bolder text-primary mb-0"
+            style="line-height: 2"
+          >
+            ACCOUNT DETAILS
+          </p>
+          <i
+            class="fas {{
+              selectedMenu == 'ACCOUNT DETAILS'
+                ? 'fa-long-arrow-alt-left'
+                : 'fa-long-arrow-alt-right'
+            }} fa-2x text-primary"
+          ></i>
+        </div>
+        <hr />
+        <div
+          class="d-flex justify-content-between cursor-pointer"
+          (click)="selectedMenu = 'ORDER HISTORY'"
+        >
+          <p
+            class="font-weight-bolder text-primary mb-0"
+            style="line-height: 2"
+          >
+            ORDER HISTORY
+          </p>
+          <i
+            class="fas {{
+              selectedMenu == 'ORDER HISTORY'
+                ? 'fa-long-arrow-alt-left'
+                : 'fa-long-arrow-alt-right'
+            }} fa-2x text-primary"
+          ></i>
+        </div>
+        <hr />
+        <div
+          class="d-flex justify-content-between cursor-pointer"
+          (click)="selectedMenu = 'REFUND & RETURNS'"
+        >
+          <p
+            class="font-weight-bolder text-primary mb-0"
+            style="line-height: 2"
+          >
+            REFUND & RETURNS
+          </p>
+          <i
+            class="fas {{
+              selectedMenu == 'REFUND & RETURNS'
+                ? 'fa-long-arrow-alt-left'
+                : 'fa-long-arrow-alt-right'
+            }} fa-2x text-primary"
+          ></i>
+        </div>
+        <hr />
+        <div
+          class="d-flex justify-content-between cursor-pointer"
+          (click)="selectedMenu = 'MEASUREMENTS'"
+        >
+          <p
+            class="font-weight-bolder text-primary mb-0"
+            style="line-height: 2"
+          >
+            MEASUREMENTS
+          </p>
+          <i
+            class="fas {{
+              selectedMenu == 'MEASUREMENTS'
+                ? 'fa-long-arrow-alt-left'
+                : 'fa-long-arrow-alt-right'
+            }} fa-2x text-primary"
+          ></i>
+        </div>
+        <hr />
+        <button
+          type="submit"
+          class="btn btn-primary form-control mt-4"
+          (click)="logout()"
+        >
+          LOG OUT
+        </button>
+      </div>
+    </div>
+    <div class="col-md-8 col-lg-9 pl-md-5 mt-md-0 mt-3">
+      <div *ngIf="selectedMenu == 'ACCOUNT DETAILS'">
+        <div class="col-xl-5 col-lg-6 col-md-7 col-sm-6 col-8 px-0">
+          <form>
+            <h4 class="font-weight-bolder text-primary">ACCOUNT DETAILS</h4>
+            <div class="form-group">
+              <label class="form-label text-primary">Email Address</label>
+              <input
+                type="text"
+                class="form-control"
+                name="email"
+                [(ngModel)]="formObj.email"
+                placeholder="Email Address"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label text-primary">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                [(ngModel)]="formObj.password"
+                placeholder="Password"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label text-primary">Mobile Number</label>
+              <input
+                type="text"
+                class="form-control"
+                name="phone"
+                [(ngModel)]="formObj.phone"
+                placeholder="Phone"
+              />
+            </div>
+
+            <h4 class="font-weight-bolder text-primary">ADDRESS DETAILS</h4>
+
+            <div class="form-group mb-0">
+              <label class="form-label text-primary">Street Address</label>
+              <input
+                type="text"
+                class="form-control"
+                name="staddress"
+                [(ngModel)]="formObj.house.address"
+                placeholder="Street Address"
+              />
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label text-primary">Street Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name="stname"
+                [(ngModel)]="formObj.house.street"
+                placeholder="Street Name"
+              />
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label text-primary">Country</label>
+              <select
+                class="form-control"
+                (change)="onCountryChange()"
+                name="country"
+                [(ngModel)]="formObj.house.country"
+              >
+                <option
+                  *ngFor="let item of countries; index as i"
+                  value="{{ item.country.name }}"
+                >
+                  {{ item.country.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group mb-0">
+              <label class="form-label text-primary">City</label>
+              <input
+                type="text"
+                class="form-control"
+                name="city"
+                [(ngModel)]="formObj.house.city"
+                placeholder="City name"
+              />
+            </div>
+            <div class="form-group mb-0">
+              <label class="form-label text-primary">Postal/Zip Code</label>
+              <input
+                type="text"
+                class="form-control"
+                name="zip"
+                [(ngModel)]="formObj.house.zip"
+                placeholder="Postcode"
+              />
+            </div>
+            <hr />
+            <button
+              type="submit"
+              class="btn btn-primary form-control"
+              (click)="update()"
+            >
+              SAVE CHANGES
+            </button>
+            <hr />
+            <!-- <button type="submit" class="btn btn-outline-primary form-control" (click)="deleteAccount()">DELETE
+              ACCOUNT</button> -->
+          </form>
+        </div>
+      </div>
+      <div *ngIf="selectedMenu == 'ORDER HISTORY'">
+        <div class="row">
+          <div class="col-md-3 col-6 mb-3">
+            <span
+              (click)="orders('All Orders')"
+              class="cursor-pointer text-primary font-weight-bolder pb-1 {{
+                orderType === 'All Orders' ? 'bb-lightgrey' : 'bb-transparent'
+              }}"
+              style="line-height: 2"
+              >All Orders</span
+            >
+          </div>
+          <div class="col-md-3 col-6 mb-3">
+            <span
+              (click)="orders('Pending')"
+              class="cursor-pointer text-primary font-weight-bolder pb-1 {{
+                orderType === 'Pending' ? 'bb-lightgrey' : 'bb-transparent'
+              }}"
+              style="line-height: 2"
+              >Pending</span
+            >
+          </div>
+          <div class="col-md-3 col-6 mb-3">
+            <span
+              (click)="orders('Completed')"
+              class="cursor-pointer text-primary font-weight-bolder pb-1 {{
+                orderType === 'Completed' ? 'bb-lightgrey' : 'bb-transparent'
+              }}"
+              style="line-height: 2"
+              >Completed</span
+            >
+          </div>
+          <div class="col-md-3 col-6 mb-3">
+            <span
+              (click)="orders('Deleted')"
+              class="cursor-pointer text-primary font-weight-bolder pb-1 {{
+                orderType === 'Deleted' ? 'bb-lightgrey' : 'bb-transparent'
+              }}"
+              style="line-height: 2"
+              >Cancelled</span
+            >
+          </div>
+        </div>
+        <div class="table-responsive-xl text-primary">
+          <table class="table table-borderless mt-3">
+            <thead class="border2px">
+              <tr class="">
+                <th>Order Number</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Measurement</th>
+                <th>Status</th>
+                <th>Rating</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="mt-3">
+              <tr>
+                <td></td>
+              </tr>
+              <tr
+                *ngFor="let item of myOrders"
+                style="
+                  border-bottom: 20px solid white;
+                  background-color: #f4f4f4;
+                "
+              >
+                <td>
+                  {{ item?.prefixAccountNumber
+                  }}{{ item?.postfixAccountNumber }}
+                </td>
+                <td>
+                  <div
+                    class="img-container cursor-pointer">
+                    <img
+                      id="productImage"
+                      ngxViewer
+                      src="{{ baseUrl }}/{{ item?.product?.image }}"
+                    />
+                  </div>
+                </td>
+                <td>
+                  {{ item?.product?.name }}
+                </td>
+                <td>{{ item?.createdAt | date : "mediumDate" }}</td>
+                <td>{{ item?.price }}</td>
+                <td>{{ item?.measurement }} - {{item?.shirtFit}}</td>
+                <td>{{ item?.invoiceStatus }}</td>
+                <td>
+                  <ngb-rating [rate]="item?.rating?.star"></ngb-rating>
+                </td>
+                <td class="text-center">
+                  <i
+                    class="fas fa-ellipsis-v fa-1x text-dark cursor-pointer"
+                    routerLink="/orderdetail/{{ item?._id }}"
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row" *ngIf="myOrders.length < 1">
+          <div class="col-md-12 p-2 text-center">
+            <p>No Orders Available</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedMenu == 'REFUND & RETURNS'">
+        <div
+          *ngFor="let item of allOrders; index as i"
+          class="row border2px mb-3 mx-0"
+        >
+          <div
+            class="col-12 d-flex justify-content-between mt-2 bb-2px mx-3 px-0"
+            style="align-items: center"
+          >
+            <h4 class="font-weight-bolder mb-0 text-primary">
+              Order Number <span class="pl-sm-3">{{ item?.orderNumber }}</span>
+            </h4>
+            <span class="cursor-pointer" style="font-size: 40px !important"
+              >&times;</span
+            >
+          </div>
+          <div
+            class="col-sm-8 mt-2 px-3 d-flex justify-content-around align-items-center"
+          >
+            <img
+              src="{{ baseUrl }}/{{ item?.product?.image }}"
+              *ngIf="item?.product?.image"
+              ngxViewer
+              id="refundImage"
+            />
+            <div>
+              <p class="font-weight-bolder mb-2 text-primary">
+                {{ item?.product?.name }}
+              </p>
+              <p class="cdg mb-2">{{ item?.product?.description }}</p>
+              <p class="cdg mb-2">${{ finalPrice(item?.price) }}</p>
+            </div>
+          </div>
+          <div class="col-sm-4 mt-2 px-3">
+            <form>
+              <select
+                class="form-control mt-5"
+                style="border: 2px solid black; border-radius: 0px"
+                name="cause"
+                [(ngModel)]="refund.reason"
+                (change)="onChng(item?.orderNumber)"
+              >
+                <option value="" disabled selected>SELECT REASON</option>
+                <option value="Product is taking too long to be delivered">
+                  Product is taking too long to be delivered
+                </option>
+                <option
+                  value="Customer discovered the same product on another website lower price"
+                >
+                  Customer discovered the same product on another website lower
+                  price
+                </option>
+              </select>
+              <ng-container *ngIf="list3.indexOf(item?.orderNumber) != -1">
+                <textarea
+                  class="form-control mt-2"
+                  name="desc"
+                  [(ngModel)]="refund.descripton"
+                  rows="5"
+                ></textarea>
+                <button
+                  type="submit"
+                  class="btn btn-primary form-control mt-2 mb-5"
+                  (click)="return(item)"
+                >
+                  Submit
+                </button>
+              </ng-container>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p *ngIf="allOrders?.length <= 0">No Orders found</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedMenu == 'MEASUREMENTS'">
+        <div class="d-flex justify-content-end mb-4 w-100">
+          <button
+            class="btn btn-primary"
+            (click)="
+              showMeasurementDialog = true;
+              openModal(
+                saveMeasurementModalTpl,
+                { windowClass: 'modal-lg animate static' },
+                baseUrl + '/' + item?.product?.image
+              )
+            "
+          >
+            Create Measurement
+          </button>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Fit</th>
+              
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!measurements.length">
+              <td class="text-center py-5 text-secondary" colspan="100%">
+                No Data Found
+              </td>
+            </tr>
+            <tr *ngFor="let item of measurements; index as index">
+              <th scope="row">{{ index + 1 }}</th>
+              <td>{{ item.name }}</td>
+              <td>{{ item.bodyType }}</td>
+              
+              <td class="d-flex align-items-center" style="gap: 8px">
+                <a
+                  class="cursor-pointer text-primary"
+                  (click)="
+                    showMeasurementDialog = true;
+                    populateMeasurement = item;
+                    openModal(
+                      saveMeasurementModalTpl,
+                      { windowClass: 'modal-lg animate static' },
+                      baseUrl + '/' + item?.product?.image
+                    )
+                  "
+                  >Edit
+                </a>
+                <span>|</span>
+                <a
+                  class="cursor-pointer text-danger"
+                  (click)="deleteMeasurement(item)"
+                  >Delete</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #Modal1 let-c="close" let-d="dismiss">
+  <img class="img-fluid" [src]="imageSrc" />
+</ng-template>
+
+<ng-template #saveMeasurementModalTpl let-c="close" let-d="dismiss">
+  <!-- <img class="img-fluid" [src]="imageSrc" /> -->
+  <div class="w-100 p-5">
+    <app-save-measurement
+      *ngIf="showMeasurementDialog"
+      [populateItem]="populateMeasurement"
+      (close)="
+        d('Close click');
+        loadMeasurements();
+        showMeasurementDialog = false;
+        populateMeasurement = null
+      "
+    ></app-save-measurement>
+  </div>
+</ng-template>
+
+<app-layout-footer></app-layout-footer>

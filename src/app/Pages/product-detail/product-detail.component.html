@@ -1,0 +1,487 @@
+<div *ngIf="!showImages">
+  <div class="container main main-mobile" *ngIf="!loading">
+  
+    <div class="row col-12 justify-content-center">
+      <div class="col-12 mt-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb" style="font-size: 12px;">
+            <li class="breadcrumb-item"><a href="https://gravaldi.com">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)" [routerLink]="['/']">Products</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ specificproduct?.name }}</li>
+          </ol>
+        </nav>
+      </div>
+      <!--Related fabrics (Multiple Images)-->
+      <div class="col-12 col-md-10 col-lg-8 mb-5 padding-zero">
+        <div
+          id="custCarousel"
+          class="carousel slide"
+          data-ride="carousel"
+          align="center"
+        >
+          <!-- slides -->
+          <div class="carousel-inner">
+            <div
+              *ngFor="let item of specificproduct?.images; index as i"
+              class="carousel-item"
+              [ngClass]="i == 0 ? 'active' : ''"
+            >
+             <!--  <image-zoom
+                *ngIf="item != null"
+                zoomMode="click"
+                [enableLens]="true"
+                [circularLens]="true"
+                [magnification]="2.0"
+                [lensWidth]="300"
+                [lensHeight]="300"
+                [enableScrollZoom]="true"
+                [fullImage]="baseUrl + '/' + item"
+                [thumbImage]="baseUrl + '/' + item"
+              ></image-zoom>-->
+               <img (click)="changeSelectedImage(item)" src="{{ baseUrl }}/{{ item }}" />
+            </div>
+          </div>
+  
+          <!-- Thumbnails -->
+          <ol class="carousel-indicators list-inline">
+            <li
+              class="list-inline-item"
+              *ngFor="let item of specificproduct?.images; index as i"
+              [ngClass]="i == 0 ? 'active' : ''"
+            >
+              <a
+                id="carousel-selector-{{ i }}"
+                [ngClass]="i == 0 ? 'selected' : ''"
+                class=""
+                [attr.data-slide-to]="i"
+                data-target="#custCarousel"
+              >
+                <img src="{{ baseUrl }}/{{ item }}" class="img-fluid" />
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <!-- <div class="col-2 col-md-3 col-lg-1">
+        <ng-container *ngIf="specificproduct?.images.length > 0">
+          <div
+            class="outer_image"
+            *ngFor="let item of specificproduct?.images"
+            (click)="clickImage(item)"
+          >
+            <img
+              src="{{ baseUrl }}/{{ item }}"
+              *ngIf="item"
+              class="productImages"
+              [ngClass]="specificproduct.image == item ? 'activeImage' : ''"
+            />
+            <img
+              src="../../../assets/favicon_bigsize.png"
+              *ngIf="!item"
+              class="productImages"
+              [ngClass]="specificproduct.image == item ? 'activeImage' : ''"
+            />
+          </div>
+        </ng-container>
+      </div> -->
+      <!--Content Area (Center => Single product Image)-->
+      <!-- <div id="singleproductImage" class="col-10 col-md-9 col-lg-7">
+        <image-zoom
+          *ngIf="specificproduct?.image != null"
+          zoomMode="click"
+          [enableLens]="true"
+          [circularLens]="true"
+          [magnification]="1.5"
+          [lensWidth]="300"
+          [lensHeight]="300"
+          [enableScrollZoom]="true"
+          [fullImage]="baseUrl + '/' + specificproduct?.image"
+          [thumbImage]="baseUrl + '/' + specificproduct?.image"
+        ></image-zoom>
+  
+        <img
+          *ngIf="specificproduct?.image == null"
+          src="../../../assets/placeholder.png"
+        />
+      </div> -->
+      <!--Right side (Details => buttons, Name, Price)-->
+      <div class="col-12 col-md-6 col-lg-4 p-0">
+        <div class="col-12 col-md-12 justify-content-center p-0">
+          <div class="row">
+            <div class="col-12 col-md-12">
+              <h4 id="productName">{{ specificproduct?.name }}</h4>
+              <i
+                class="fas fa-heart"
+                *ngIf="user != null"
+                (click)="favouriteUpd()"
+                [ngStyle]="{
+                  color: favouriteProduct.favourite ? 'red' : 'white'
+                }"
+                id="favourite"
+              >
+              </i>
+              <div class="d-md-none">
+                <br><br>
+              </div>
+              <h5 id="prodPrice" *ngIf="specificproduct?.price">
+                $ {{ specificproduct?.price }}
+              </h5>
+            </div>
+            <div class="col-12 mb-2">
+              <a
+                (click)="customizeProduct(true)"
+                id="createCustomSize"
+                href="javascript:void(0)"
+              >
+                Create Custom Size
+              </a>
+            </div>
+            <div class="col-12 col-md-12">
+              <div ngbDropdown (click)="openDropdown($event)">
+                <button
+                  type="button"
+                  id="bttb"
+                  class="w-100"
+                  [ngClass]="errorForSizefield ? 'errorField' : ''"
+                  ngbDropdownToggle
+                >
+                  <span *ngIf="!sizeApply">Select Size</span>
+                  <span *ngIf="sizeApply">
+                    <span *ngIf="!sizeObj.measurementName">Fit : {{ sizeObj.fit }} , Size : {{ sizeTitle() }}</span>
+                    <span *ngIf="sizeObj.measurementName">Measurement : {{ sizeObj.measurementName }}</span>
+                  </span>
+                </button>
+                <div ngbDropdownMenu id="dropdown-Menu">
+                  <div class="row">
+                    <div class="col-12 col-md-12">
+                      <div class="picker">
+                        <div *ngIf="user">
+                          <h5>Custom Measurements</h5>
+                        <div class="dropdown-divider"></div>
+  
+                        <div class="flex">
+                          <label
+                            *ngFor="let item of measurements; index as j"
+                            [ngStyle]="{'pointer-events': j !== indux && disable ? 'none': 'visible' }"
+                            [ngClass]="[
+                              j == indux
+                                ? 'activeLabel'
+                                : 'simpleLabel'
+                            ]"
+                          >
+                            <input
+                              type="checkbox"
+                              class="d-none"
+                              name="measurement-size"
+                              value="{{ item?._id }}"
+                              (change)="changeMeansure(item?.name,item.bodyType,item._id,j)"
+                              [(ngModel)]="sizeObj.measurementId"
+                              
+                            />
+                           
+                            <span>{{ item?.name }}</span>
+                          </label>
+                        </div>
+                        </div>
+                        <h5>Fit</h5>
+                        <div class="dropdown-divider"></div>
+  
+                        <div class="flex"  [ngStyle]="{'pointer-events': disable ? 'none': 'visible' }">
+                          <label
+                            *ngFor="let item of ext.fitData; index as j"
+                            [ngClass]="[
+                              item?.value == sizeObj.fit
+                                ? 'activeLabel'
+                                : 'simpleLabel'
+                            ]"
+                          >
+                            <input
+                              type="radio"
+                              name="fit-size"
+                              value="{{ item?.value }}"
+                              [(ngModel)]="sizeObj.fit"
+                            
+                            />
+                            <span>{{ item?.value }}</span>
+                          </label>
+                        </div>
+  
+                        <h5>Size Type</h5>
+                        <div class="dropdown-divider"></div>
+  
+                        <div class="flex" [ngStyle]="{'pointer-events': disable ? 'none': 'visible' }">
+                          <label
+                            *ngFor="let item of ext.sizeData; index as j"
+                            [ngClass]="[
+                              item?._id == sizeObj.sizeType
+                                ? 'activeLabel'
+                                : 'simpleLabel'
+                            ]"
+                          >
+                            <input
+                              type="radio"
+                              name="fit-size"
+                              value="{{ item?._id }}"
+                              [(ngModel)]="sizeObj.sizeType"
+                            />
+                            <span>{{ item?.title }}</span>
+                          </label>
+                        </div>
+  
+                        <div class="apply px-2 py-3" (click)="applySize()">
+                          <a class="btn btn-default btn-block applySize">Apply</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn-primary addToCart"
+                type="button"
+                (click)="addToCart()"
+              >
+                ADD TO CART
+              </button>
+  
+              <div class="row">
+                <!-- <div
+                  *ngIf="user != null"
+                  [ngClass]="user != null ? 'col-6 p-0' : 'd-none'"
+                >
+                  <button
+                    class="btn btn-primary wishlist"
+                    (click)="favouriteUpd()"
+                  >
+                    <span *ngIf="!favouriteProduct.favourite">
+                      Save To Wishlist
+                    </span>
+                    <span *ngIf="favouriteProduct.favourite">
+                      Already in Wishlist
+                    </span>
+                  </button>
+                </div> -->
+                <div [ngClass]="true ? 'col-12 p-0' : 'col-6 p-0'">
+                  <button
+                    *ngIf="specificproduct?.isCustomize"
+                    type="button"
+                    class="btn btn-primary customizeBtn"
+                    (click)="customizeProduct()"
+                  >
+                    <span>CUSTOMIZE</span>
+                    <i class="fas fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+  
+              <a href="https://gravaldi.com/contact/" id="contactLink">
+                <button type="button" class="btn btn-primary contactBtn">
+                  Contact Personal Stylist
+                </button>
+              </a>
+  
+              <a id="ratingButton" *ngIf="ratngPercentage != null">
+                <p (click)="scroll('reviewCard')">
+                  <img src="../../../assets/starRating.png" alt="" />
+                  <span id="val">{{ ratngPercentage }} / 5</span>
+                </p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div id="accordion" class="my-5">
+      <!--Description Tab-->
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 id="title">
+            <button
+              type="button"
+              class="btn btn-link"
+              data-toggle="collapse"
+              data-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+              (click)="dropdown1 = !dropdown1"
+            >
+              <span class="">
+                <span
+                  [ngClass]="
+                    dropdown1
+                      ? 'fa fa-angle-down angle-down'
+                      : 'fa fa-angle-up angle-up'
+                  "
+                ></span>
+                Fabric Info
+              </span>
+            </button>
+          </h5>
+        </div>
+  
+        <div
+          id="collapseOne"
+          class="collapse show"
+          aria-labelledby="headingOne"
+          data-parent="#accordion"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <div id="p_detail">
+                  <p *ngIf="specificproduct?.fabric">
+                    <span id="que">Fabric</span>
+                    <span id="ans">{{ specificproduct?.fabric }}</span>
+                  </p>
+                  <p *ngIf="specificproduct?.color">
+                    <span id="que">Color</span>
+                    <span id="ans">{{ specificproduct?.color }}</span>
+                  </p>
+                  <p *ngIf="specificproduct?.pattern">
+                    <span id="que">Pattern</span>
+                    <span id="ans">{{ specificproduct?.pattern }}</span>
+                  </p>
+                  <p *ngIf="specificproduct?.style">
+                    <span id="que">Style</span>
+                    <span id="ans">{{ specificproduct?.style }}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <p id="desc">
+                  {{ specificproduct?.description }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!--Review Tab-->
+      <div class="card reviewCard" *ngIf="ratngPercentage != null">
+        <div class="card-header" id="headingTwo" (click)="dropdown2 = !dropdown2">
+          <h5 id="title">
+            <button
+              type="button"
+              class="btn btn-link"
+              data-toggle="collapse"
+              data-target="#collapseTwo"
+              aria-expanded="true"
+              aria-controls="collapseTwo"
+              id="scrollId"
+            >
+              <i *ngIf="!dropdown2" class="fa fa-angle-up angle-up"></i>
+              <i *ngIf="dropdown2" class="fa fa-angle-down angle-down"></i>
+              <span>Reviews ( {{ reviews?.length }} )</span>
+            </button>
+          </h5>
+        </div>
+  
+        <div
+          id="collapseTwo"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordion"
+        >
+          <div class="card-body">
+            <div class="row w-100">
+              <div class="col-12 col-md-6">
+                <ng-template #t let-fill="fill">
+                  <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill">&#9733;</span>
+                    &#9733;
+                  </span>
+                </ng-template>
+  
+                <ngb-rating
+                  [(rate)]="ratngPercentage"
+                  [starTemplate]="t"
+                  [readonly]="true"
+                  [max]="5"
+                ></ngb-rating>
+                <div class="col-12 col-md-6">
+                  <div *ngFor="let item of reviews; index as i"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!--suggested Products-->
+    <div class="row" *ngIf="suggestedProducts?.length > 0">
+      <div class="col-12 p-2">
+        <hr />
+        <h3 class="m-0 py-3">ALSO SUGGESTED</h3>
+        <div class="row contentArea">
+          <div
+            class="column col-6 col-md-3"
+            *ngFor="let item of suggestedProducts"
+            (click)="redirect(item?._id)"
+          >
+            <a routerLink="/productdetail/{{ item?._id }}">
+              <div class="img-container">
+                <img
+                  *ngIf="item?.image != null"
+                  src="{{ baseUrl }}/{{ item?.image }}"
+                />
+  
+                <img
+                  *ngIf="!item?.image"
+                  src="../../../assets/favicon_bigsize.png"
+                />
+              </div>
+              <div class="product__text">
+                <p title="{{ item?.name }}" class="product__title">
+                  {{ item?.name }}
+                </p>
+                <p class="product__price">
+                  <span
+                    *ngIf="
+                      item?.price !== '' &&
+                        item?.price !== undefined &&
+                        item?.price !== '';
+                      null
+                    "
+                  >
+                    ${{ item?.price }}
+                  </span>
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" *ngIf="loading">
+    <div class="col-md-12 text-center">
+      <i class="fa fa-spin fa-spinner fa-2x pageLoader"></i>
+    </div>
+  </div>
+  
+  <app-layout-footer></app-layout-footer>
+  
+</div>
+
+<div *ngIf="showImages" class="container-fluid popup">
+  <div class="row topbar-images" style="">
+    <div class="offset-1 col-10 list-inline text-center">
+      <div class="list-inline-item" *ngFor="let item of specificproduct?.images; index as i">
+        <img (click)="changeSelectedImage(item)" class="inner-image cursor-pointer" src="{{ baseUrl }}/{{ item }}" alt="">
+      </div>
+    </div>
+    <div class="col-1">
+      <div class="cursor-pointer" (click)="showImages = !showImages"><img id="close-icon" src="assets/LargerX.png" alt=""></div>
+    </div>
+  </div>
+  <div class="row" style="padding: 0;margin:0; margin-top: 6%">
+    <div class="col-12">
+        <img id="main-image" src="{{ baseUrl }}/{{selectedImage}}" alt="">
+    </div>
+  </div>
+
+</div>

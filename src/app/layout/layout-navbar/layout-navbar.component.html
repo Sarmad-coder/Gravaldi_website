@@ -1,0 +1,157 @@
+
+  <nav class="navbar navbar-expand-md" style="background: #000000 !important">
+    <div class="container-fluid px-0">
+      <a class="navbar-brand logo" tabindex="-1" href="https://gravaldi.com/">GRAVALDI</a>
+      <div class="d-block d-md-none">
+
+        <a *ngIf="closeMenu" class="cursor-pointer" routerLink="/cart" style="margin: 0px 10px; position: relative">
+          <img style="margin-left: 5px; margin-right: 10px" src="assets/bag.png" height="40px" alt="" srcset="" />
+
+          <span style="
+            position: absolute;
+            color: white;
+            font-family: Helvetica, Arial, Sans-serif;
+            font-size: 1em;
+            font-weight: 700;
+            right: 50%;
+            top: 20%;
+          ">{{ this.prodSrv.cartItems || 0 }}</span>
+
+          <!-- <i class="fa fa-shopping-cart cursor-pointer faNavlink" aria-hidden="true" routerLink="/cart"></i> -->
+        </a>
+        <button *ngIf="closeMenu" class="navbar-toggler p-0 text-white" type="button" (click)="toggleMenu()">
+          <img src="assets/menu.png" style="width: 22px" alt="" />
+        </button>
+      </div>
+
+      <div class="navbar-collapse d-none" [ngbCollapse]="!isExpanded1">
+        <ul class="navbar-nav ml-auto topNav mr-3">
+          <li class="nav-item">
+            <a class="nav-link" href="https://gravaldi.com/">
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://gravaldi.com/about/">
+              <span>About</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active-link">
+              <span>Shop</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="https://gravaldi.com/contact/">
+              <span>Contact</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="line" style="margin: 0 8px 0 -8px"></div>
+
+        <form class="form-inline my-2 my-lg-0 ng-valid">
+          <a style="margin: 0px 20px">
+            <img src="assets/search1.png" class="cursor-pointer" height="18px" routerLink="/search" alt="" srcset="" />
+            <!-- <i class="fa fa-search cursor-pointer faNavlink" aria-hidden="true" routerLink="/search"></i> -->
+          </a>
+          <a *ngIf="!loggedInUser" routerLink="/login" style="margin: 0px 20px; color: white; font-weight: 600">
+            Sign In
+            <!-- <img
+            src="assets/user1.png"
+            class="cursor-pointer"
+            height="17px"
+            alt=""
+            srcset=""
+          /> 
+           <i
+          class="fa fa fa-user-o cursor-pointer faNavlink"
+          aria-hidden="true"
+        ></i> -->
+          </a>
+
+          <a *ngIf="loggedInUser" style="margin: 0px 20px" routerLink="/account">
+            <img src="assets/user1.png" class="cursor-pointer" height="20px" alt="" srcset="" />
+
+            <!-- <i class="fa fa fa-user-o cursor-pointer faNavlink" aria-hidden="true" routerLink="/account"></i> -->
+          </a>
+          <div class="cursor-pointer" routerLink="/cart" style="margin: 0px 15px; position: relative;display: flex;">
+            <div style="color: white;margin-top: 10px">Cart</div>
+            <img style="margin-left: 10px; margin-right: 10px" src="assets/bag.png" height="40px" alt="" srcset="" />
+
+            <span style="
+              position: absolute;
+              color: white;
+              font-family: Helvetica, Arial, Sans-serif;
+              font-size: 1em;
+              font-weight: 700;
+              right: 26%;
+              top: 32%;
+            ">{{ this.prodSrv.cartItems || 0 }}</span>
+
+            <!-- <i class="fa fa-shopping-cart cursor-pointer faNavlink" aria-hidden="true" routerLink="/cart"></i> -->
+          </div>
+          <!-- <span
+          class="badge badge-warning"
+          id="cartItems"
+          *ngIf="this.prodSrv.cartItems > 0"
+        >
+          {{ this.prodSrv.cartItems }}
+        </span> -->
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- mobile menu -->
+  <div *ngIf="!closeMenu" class="mobile-menu">
+    <!-- close btn -->
+    <button class="close-btn" (click)="toggleMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- home -->
+    <div class="item delay-1">
+      <a href="https://gravaldi.com/">Home</a>
+    </div>
+    <!-- about -->
+    <div class="item delay-2">
+      <a href="https://gravaldi.com/about/">About</a>
+    </div>
+    <!-- shop -->
+    <div class="item delay-3">
+      <a href="https://shop.gravaldi.com/">Shop</a>
+    </div>
+    <!-- contact -->
+    <div class="item delay-4">
+      <a href="https://gravaldi.com/contact/">Contact</a>
+    </div>
+    <div class="item delay-5">
+      <a href="https://shop.gravaldi.com/cart">Cart ({{ this.prodSrv.cartItems || 0 }})</a>
+    </div>
+    <!-- account -->
+    <div class="account-btn delay-6" *ngIf="loggedInUser">
+      <a routerLink="/account" (click)="toggleMenu()">Account</a>
+    </div>
+
+    <div class="account-btn delay-7" *ngIf="!loggedInUser">
+      <a routerLink="/login" (click)="toggleMenu()">Login/Register</a>
+    </div>
+    <!-- socials -->
+    <div class="socials delay-8">
+      <a href="https://www.facebook.com/gravaldi.shirt/" class="facebook">
+        <i class="fa fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com/gravaldi.shirt/" class="instagram">
+        <i class="fa fa-instagram"></i>
+      </a>
+      <a href="mailto:hi@gravaldi.com" class="mail">
+        <i class="far fa-envelope"></i>
+      </a>
+    </div>
+  </div>

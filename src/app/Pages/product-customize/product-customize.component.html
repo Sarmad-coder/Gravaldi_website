@@ -1,0 +1,1157 @@
+
+  <nav>
+    <div class="step-nav">
+      <a [ngClass]="currentTab == 'Fabric' ? 'is-active' : 'span'" (click)="changeTab('Fabric')">
+        <span>Fabric</span>
+      </a>
+      <a [ngClass]="currentTab == 'Style' ? 'is-active' : 'span'" (click)="changeTab('Style')">
+        <span>Style</span>
+      </a>
+      <a [ngClass]="currentTab == 'Sizes' ? 'is-active' : 'span'" (click)="changeTab('Sizes')">
+        <span>Sizes</span>
+      </a>
+      <a [ngClass]="currentTab == 'Summary' ? 'is-active' : 'span'" (click)="changeTab('Summary')">
+        <span>Summary</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container-fluid main">
+    <div class="row" *ngIf="!loader">
+      <!--Left Side of content page-->
+      <div class="col-md-6" id="left-side">
+        <ng-container *ngIf="left_side_loader">
+          <div class="column col-lg-12 text-center">
+            <i class="fa fa-spin fa-spinner fa-2x left_side_loader"></i>
+          </div>
+        </ng-container>
+        <div class="column col-lg-12" *ngIf="!left_side_loader">
+          <img src="{{ baseUrl }}/{{ specificproduct?.image }}" *ngIf="specificproduct?.image" class="singeImage" />
+          <img src="../../../assets/placeholder.png" *ngIf="!specificproduct?.image" class="singeImage" />
+        </div>
+      </div>
+      <!--Right Side of content page-->
+      <div class="col-md-6" id="right-side" (scroll)="fabricScroll($event)">
+        <div class="row" id="fabricDiv" *ngIf="currentTab == 'Fabric'">
+          <div class="col-md-4">
+            <h5 id="h5">Fabrics</h5>
+          </div>
+          <div class="col-md-8">
+            <input type="text" placeholder="Search By Fabric Name Price" name="search_text"
+              class="form-control search_fabric_input w-100 mb-3" [(ngModel)]="prodObj.searchText"
+              (keyup)="searchFabric()" />
+          </div>
+
+          <div class="col-md-12">
+            <div class="row" *ngIf="search_loader">
+              <div class="col-md-12 text-center my-5">
+                <i class="fa fa-spin fa-spinner fa-2x"></i>
+              </div>
+            </div>
+            <ng-container *ngIf="!search_loader">
+              <div class="row" *ngIf="fabrics?.length > 0">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of fabrics; index as i">
+                  <i class="fas fa-check-circle" [ngClass]="
+                    productInfo.fabric == item?._id
+                      ? 'selectdIcon'
+                      : 'unselectdIcon'
+                  "></i>
+                  <div *ngIf="item?.previewImage" id="innerDiv">
+                    <img src="{{ liveBaseUrl }}/{{ item?.previewImage }}" [ngStyle]="{
+                      border:
+                        productInfo.fabric === item?._id
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }" class="card-img-top fabricImages" (click)="changeFabric(item?._id)" />
+                    <p class="fabricName">{{ item?.name }}</p>
+                  </div>
+                </div>
+
+                <!-- <div class="col-12 col-md-12">
+                <button
+                  class="btn loadMore"
+                  [disabled]="loadmore"
+                  (click)="loadMore()"
+                >
+                  <a>Load More</a>
+                </button>
+              </div> -->
+              </div>
+              <div class="row" *ngIf="fabrics?.length <= 0">
+                <div class="col-md-12 text-center m-5">
+                  <h6>No fabrics match your search.</h6>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row" id="styleDiv" *ngIf="currentTab == 'Style'">
+          <div class="col-md-12">
+            <h5 id="h5">Style</h5>
+          </div>
+
+
+          <div class="col-md-12">
+
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              id="collar_dropdown" data-target="#clpTwo" (click)="
+              collarDropdown = !collarDropdown; collapseAll('collar_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Collar
+                <span style="font-weight: 500" *ngIf="productInfo.collar_summary != ''">
+                  - {{ productInfo.collar_summary }}
+                </span>
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpTwo" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of ext_ord?.coller; index as i"
+                    [ngClass]="
+                    item?._id == productInfo.collar ? 'selected_ext' : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.collar
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+
+                    <div class="innerext" (click)="collarValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.collar
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" id="cuff_dropdown" class="accordion ac-btn collapsed w-100 btn btn-light"
+              data-toggle="collapse" data-target="#clpThree"
+              (click)="cuffDropdown = !cuffDropdown; collapseAll('cuff_dropdown')">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Cuffs
+                <span style="font-weight: 500" *ngIf="productInfo.cuffs_summary != ''">
+                  - {{ productInfo.cuffs_summary }}
+                </span>
+              </span>
+            </button>
+
+            <div class="accordion">
+              <div id="clpThree" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of ext_ord?.cuff; index as i"
+                    [ngClass]="
+                    item?._id == productInfo.cuffs ? 'selected_ext' : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.cuffs
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="cuffValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.cuffs
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="
+                      position: absolute;
+                      right: 10px;
+                      bottom: 10px;
+                      z-index: 9999;
+                    ">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" id="placket_dropdown" class="accordion ac-btn collapsed w-100 btn btn-light"
+              data-toggle="collapse" data-target="#clpFour" (click)="
+              placketDropdown = !placketDropdown;
+              collapseAll('placket_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Plackets
+                <span style="font-weight: 500" *ngIf="productInfo.placket_summary != ''">
+                  - {{ productInfo.placket_summary }}
+                </span>
+              </span>
+            </button>
+
+            <div class="accordion">
+              <div id="clpFour" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of ext_ord?.placket; index as i"
+                    [ngClass]="
+                    item?._id == productInfo.placket ? 'selected_ext' : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.placket
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="placketValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.placket
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpFive" id="pocket_dropdown" (click)="
+              pocketDropdown = !pocketDropdown; collapseAll('pocket_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                pockets
+                <span style="font-weight: 500" *ngIf="productInfo.pocket_summary != ''">
+                  - {{ productInfo.pocket_summary }}
+                </span>
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpFive" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of ext_ord?.pocket; index as i"
+                    [ngClass]="
+                    item?._id == productInfo.pocket ? 'selected_ext' : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.pocket
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="pocketValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.pocket
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpSeven" id="button_dropdown" (click)="
+              buttonDropdown = !buttonDropdown; collapseAll('button_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Buttons
+                <span style="font-weight: 500" *ngIf="productInfo.buttons_summary != ''">
+                  - {{ productInfo.buttons_summary }}
+                </span>
+              </span>
+            </button>
+
+            <div class="accordion">
+              <div id="clpSeven" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of ext_ord?.buttons; index as i"
+                    [ngClass]="
+                    item?._id == productInfo.buttons ? 'selected_ext' : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.buttons
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="buttonsValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.buttons
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <button
+            type="button"
+            class="accordion ac-btn collapsed w-100 btn btn-light"
+            data-toggle="collapse"
+            data-target="#clpEight"
+            (click)="stageDropdown = !stageDropdown"
+          >
+            <span class="float-left pl-2">Stage</span>
+            
+          </button> -->
+
+            <!-- <div class="accordion">
+            <div id="clpEight" class="collapse">
+              <div class="row inner_Collapse">
+                <div
+                  class="col-6 col-sm-6 col-md-6 col-lg-4 p-0"
+                  *ngFor="let item of ext_ord?.stage; index as i"
+                  [ngClass]="
+                    item?._id == productInfo.stage ? 'selected_ext' : 'ext'
+                  "
+                >
+                  <i
+                    class="fas fa-check-circle"
+                    [ngClass]="
+                      item?._id == productInfo.stage
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "
+                  ></i>
+                  <div
+                    class="innerext"
+                    (click)="stagesValue(item?._id, item?.title)"
+                    [ngStyle]="{
+                      border:
+                        item?._id == productInfo.stage
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }"
+                  >
+                    <img
+                      *ngIf="item?.image != ''"
+                      src="{{ baseUrl }}/{{ item?.image }}"
+                      id="extImage"
+                    />
+                    <img
+                      *ngIf="item?.image == ''"
+                      src="{{ placeholderImage }}"
+                      id="extImage"
+                    />
+                    <p *ngIf="item?.title != ''" id="extName">
+                      {{ item?.title }}
+                    </p>
+                    <div
+                      (click)="
+                        infoDataChange(
+                          item?.popUpImage,
+                          item?.popUpText,
+                          item?.title
+                        );
+                        open1(
+                          ModalInfo,
+                          {
+                            windowClass: 'modal-sm animate static',
+                            backdrop: 'static'
+                          },
+                          null
+                        )
+                      "
+                      style="position: absolute; right: 10px; bottom: 10px;"
+                    >
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpNine" id="back_dropdown"
+              (click)="backDropdown = !backDropdown; collapseAll('back_dropdown')">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Back
+                <span style="font-weight: 500" *ngIf="productInfo.back_summary != ''">
+                  - {{ productInfo.back_summary }}
+                </span>
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpNine" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0" *ngFor="let item of ext_ord?.back; index as i"
+                    [ngClass]="
+                    item?._id == productInfo.back ? 'selected_ext' : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.back
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="backValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.back
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpTen" id="bottomStyle_dropdown" (click)="
+              bottomStyleDropdown = !bottomStyleDropdown;
+              collapseAll('bottomStyle_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Bottom Style
+                <span style="font-weight: 500" *ngIf="productInfo.bottomStyle_summary != ''">
+                  - {{ productInfo.bottomStyle_summary }}
+                </span>
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpTen" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0"
+                    *ngFor="let item of ext_ord?.bottomStyle; index as i" [ngClass]="
+                    item?._id == productInfo.bottomStyle
+                      ? 'selected_ext'
+                      : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.bottomStyle
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="bottomStyleValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.bottomStyle
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpEleven" id="innerContrast_dropdown" (click)="
+              inner_contrastDropdown = !inner_contrastDropdown;
+              collapseAll('innerContrast_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Inner Contrast
+                <span style="font-weight: 500" *ngIf="productInfo.inner_contrast_summary != ''">
+                  - {{ productInfo.inner_contrast_summary }}
+                </span>
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpEleven" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0"
+                    *ngFor="let item of ext_ord?.inner_contrast; index as i" [ngClass]="
+                    item?._id == productInfo.inner_contrast
+                      ? 'selected_ext'
+                      : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.inner_contrast
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="inner_contrastValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.inner_contrast
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpTwelve" id="interLining_dropdown" (click)="
+              interliningDropdown = !interliningDropdown;
+              collapseAll('interLining_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Interlining
+                <span style="font-weight: 500" *ngIf="productInfo.interlining_summary != ''">
+                  - {{ productInfo.interlining_summary }}
+                </span>
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpTwelve" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-0"
+                    *ngFor="let item of ext_ord?.interlining; index as i" [ngClass]="
+                    item?._id == productInfo.interlining
+                      ? 'selected_ext'
+                      : 'ext'
+                  ">
+                    <i class="fas fa-check-circle" [ngClass]="
+                      item?._id == productInfo.interlining
+                        ? 'selectdIcon'
+                        : 'unselectdIcon'
+                    "></i>
+                    <div class="innerext" (click)="interliningValue(item?._id, item?.title)" [ngStyle]="{
+                      border:
+                        item?._id == productInfo.interlining
+                          ? '1px solid #000000'
+                          : '1px solid #D3D3D3'
+                    }">
+                      <img *ngIf="item?.image != ''" src="{{ baseUrl }}/{{ item?.image }}" id="extImage" />
+                      <img *ngIf="item?.image == ''" src="{{ placeholderImage }}" id="extImage" />
+                      <p *ngIf="item?.title != ''" id="extName">
+                        {{ item?.title }}
+                      </p>
+                    </div>
+                    <div (click)="
+                      infoDataChange(
+                        item?.popUpImage,
+                        item?.popUpText,
+                        item?.title
+                      );
+                      open1(
+                        ModalInfo,
+                        {
+                          windowClass: 'modal-sm animate static',
+                          backdrop: 'static'
+                        },
+                        null
+                      )
+                    " style="position: absolute; right: 10px; bottom: 10px">
+                      <i class="fas fa-info-circle"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="accordion ac-btn collapsed w-100 btn btn-light" data-toggle="collapse"
+              data-target="#clpSix" id="monogram_dropdown" (click)="
+              monogramDropdown = !monogramDropdown;
+              collapseAll('monogram_dropdown')
+            ">
+              <span class="float-left pl-2" style="font-weight: 600">
+                Monogram
+              </span>
+
+            </button>
+
+            <div class="accordion">
+              <div id="clpSix" class="collapse">
+                <div class="row inner_Collapse">
+                  <div class="col-12 col-md-12">
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="mongoInput"
+                        [(ngModel)]="productInfo.monogram" (click)="monogramCheck()" />
+                      <span class="custom-control-label">
+                        Include monogram $10
+                      </span>
+                    </label>
+                  </div>
+                  <div class="row">
+                    <div class="col-6 col-md-6 mb-2">
+                      <label for="">Initials</label>
+                      <input [(ngModel)]="productInfo.initials" class="form-control" (change)="saveStyle()"
+                        name="initials" />
+                    </div>
+                    <div class="col-6 col-md-6 mb-2">
+                      <label for="">Style</label>
+                      <select [(ngModel)]="productInfo.style" class="form-control" (change)="productStyle()"
+                        name="style">
+                        <option *ngFor="let item of styles" value="{{ item?._id }}">
+                          {{ item?.title }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-6 col-md-6 mb-2">
+                      <label for="">Placement</label>
+                      <select [(ngModel)]="productInfo.placement" class="form-control" (change)="productPlacement()"
+                        name="placement">
+                        <option *ngFor="let item of placements" value="{{ item?._id }}">
+                          {{ item?.title }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-6 col-md-6 mb-2">
+                      <label for="">Colors</label>
+                      <select [(ngModel)]="productInfo.color" (change)="productColor()" class="form-control"
+                        name="color">
+                        <option value=""></option>
+                        <option *ngFor="let item of ProductColors" value="{{ item?._id }}">
+                          {{ item?.title }}
+                        </option>
+                      </select>
+                      <!-- <div
+                      *ngFor="let item of ProductColors; index as i"
+                      class="mx-1 my-2 {{
+                        item?._id == productInfo.color
+                          ? 'colorOuterEnable'
+                          : 'colorOuterDisable'
+                      }}"
+                      (click)="productColor(item?._id, item?.title)"
+                    >
+                      <div
+                        class="text-center align-item-center colorBackground"
+                        [ngStyle]="{ background: item?.webValue }"
+                      ></div>
+                    </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <div class="row" id="sizeDiv" *ngIf="currentTab == 'Sizes'">
+          <div class="col-12 col-md-12 col-lg-5" id="lftside">
+            <div class="row">
+              <h5 id="h5">Standard Size</h5>
+              <div class="col-12 col-md-12 p-0" *ngIf="isLoggedIn">
+                <label for="Measurements_1" class="m-0">Measurements</label>
+                <select name="Measurements_1" id="Measurements_1" class="form-control" [(ngModel)]="custom_measurement"
+                  (change)="defalt('custom')">
+                  <!-- <option disabled selected>SELECT Measurement</option> -->
+                  <option [ngValue]="null">None</option>
+                  <option *ngFor="let item of measurements" [ngValue]="item">
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-md-12 p-0 mt-2">
+                <label for="fit_1" class="m-0">Fit</label>
+                <select name="fit_1" id="fit_1" class="form-control" [(ngModel)]="sizeObj.fit"
+                  (change)="defalt(sizeObj.sizeType)" [disabled]="!!custom_measurement">
+                  <option *ngFor="let item of ext.fitData; index as j" value="{{ item?.value }}">
+                    {{ item?.value }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-12 col-md-12 p-0 mt-2">
+                <label for="size_1" class="m-0">Size</label>
+                <select name="size_1" id="size_1" class="form-control" [(ngModel)]="sizeObj.sizeType"
+                  (change)="defalt(sizeObj.sizeType)" [disabled]="!!custom_measurement">
+                  <option *ngFor="let item of ext.sizeData; index as j" value="{{ item?._id }}">
+                    {{ item?.title }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-7 p-0" id="rghsid">
+            <ng-container #name *ngIf="!sizeLoader">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h5 id="h5">SIZE DETAILS</h5>s
+                </div>
+                <div class="d-flex justify-content-center align-items-center" *ngIf="custom_measurement == null">
+                  <button type="button" class="btn btn-link btn-sm btn-same-name" style="color: black"
+                    (click)="defalt(sizeObj.sizeType)">
+                    reset
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm btn-same-name"
+                    (click)="saveSize(true, false, true)">
+                    Save Size
+                  </button>
+                </div>
+                <!-- <div class="d-flex justify-content-center align-items-center" *ngIf="!isLoggedIn">
+                  
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm btn-same-name"
+                    (click)="saveSize(false, true)"
+                  >
+                  Login to save your size
+                  </button>
+                </div> -->
+
+              </div>
+              <div class="d-flex justify-content-end">
+
+                <div class="d-flex justify-content-center align-items-center"
+                  *ngIf="custom_measurement == null && isLoggedIn">
+                  <input [style.border-color]="measurementNameError ? 'red' : null" type="text"
+                    [(ngModel)]="sizeObj.measurementName" class="form-control" placeholder="Measurement Name">
+                </div>
+              </div>
+              <div class="row m-0" *ngFor="let item of sizez; index as i">
+                <div class="col-4 col-md-4 col-lg-3">
+                  <label for="{{ item.value }}" id="meas_label" (click)="
+                    open(measurment_Video, { windowClass: 'modal-lg animate' })
+                  ">
+                    <a (click)="searchVideo(item)">{{ item?.key | uppercase }}</a>
+                  </label>
+                </div>
+
+                <div class="col-8 col-md-8 col-lg-9 p-0" id="valsid" *ngIf="item?.key != 'type'">
+                  <div class="row">
+                    <div class="col-6 p-0" [ngClass]="{
+                      'col-12': isCustome
+                    }">
+                      <input type="number" step=".5" min="0" [disabled]="!isCustome" id="{{ item.value }}" [ngStyle]="{
+                        border: item.selected ? '1px solid red' : ''
+                      }" class="form-control sizeInput" name="{{ item.key }}" [(ngModel)]="item.value"
+                        placeholder="size" />
+                    </div>
+                    <div *ngIf="!isCustome" class="col-6 text-right p-0">
+                      <button class="btn minus" type="button" [disabled]="
+                        item.value == '' || item.value == 0 || item.value <= 0
+                      " (click)="minusValue(i)">
+                        –
+                      </button>
+                      <button class="btn plus" type="button" (click)="plusValue(i)">
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div
+                class="col-8 col-md-8 col-lg-9 p-0"
+                *ngIf="item?.key == 'type'"
+              >
+                <select
+                  class="form-control select_type"
+                  [ngStyle]="{ border: item.selected ? '1px solid red' : '' }"
+                  name="type"
+                  name="{{ item.key }}"
+                  [(ngModel)]="item.value"
+                >
+                  <option value="Shirt">Shirt</option>
+                  <option value="Overshirt">Overshirt</option>
+                  <option value="Traveler Jacket">Traveler Jacket</option>
+                  <option value="Polo">Polo</option>
+                  <option value="Pull-Over Shirt">Pull-Over Shirt</option>
+                  <option value="Blazer">Blazer</option>
+                  <option value="Pants">Pants</option>
+                </select>
+              </div> -->
+              </div>
+              <br />
+              <br />
+            </ng-container>
+
+            <div class="row m-0" *ngIf="sizeLoader">
+              <div class="col-md-12 text-center righLoader">
+                <i class="fa fa-spin fa-spinner fa-2x"></i>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" id="summaryDiv" *ngIf="currentTab == 'Summary'">
+          <div class="col-12 col-md-12">
+            <div class="row mb-3">
+              <h5 id="productName">{{ specificproduct?.name }}</h5>
+              <br />
+              <div class="row">
+                <div class="col mt-3">
+                  <a class="btn addToCart w-100" (click)="addToCart()">Add to Cart</a>
+                </div>
+
+                <div class="col mt-3">
+                  <a class="btn wishlist w-100" *ngIf="!favouriteProduct.favourite" (click)="goBack()">
+                    Continue Shopping
+                  </a>
+                </div>
+
+                <div class="col mt-3">
+                  <a class="btn wishlist w-100" *ngIf="!favouriteProduct.favourite" (click)="checkOut()">
+                    Checkout
+                  </a>
+                </div>
+
+                <div class="col-md-6 mt-3">
+                  <a class="btn already_Wishlist w-100" *ngIf="favouriteProduct.favourite">
+                    Already Saved in Wishlist
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-12 col-md-12" id="fabric" *ngIf="productInfo?.fabric_summary">
+                <div class="row">
+                  <div class="col-3">
+                    <h5>Fabric</h5>
+                  </div>
+                  <div class="col-9">
+                    <img src="{{ baseUrl }}/{{ productInfo?.fabric_summary }}" id="fabricImage" alt="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-12" id="style">
+                <div class="row">
+                  <div class="col-3">
+                    <h5>Style</h5>
+                  </div>
+                  <div class="col-9">
+                    <p id="val" placement="top" ngbTooltip="Color" *ngIf="productInfo?.color_summary">
+                      {{ productInfo.color_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Collar" *ngIf="productInfo?.collar_summary">
+                      {{ productInfo.collar_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Cuff" *ngIf="productInfo?.cuffs_summary">
+                      {{ productInfo.cuffs_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Placket" *ngIf="productInfo?.placket_summary">
+                      {{ productInfo.placket_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Pocket" *ngIf="productInfo?.pocket_summary">
+                      {{ productInfo.pocket_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Button" *ngIf="productInfo?.buttons_summary">
+                      {{ productInfo.buttons_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Placement" *ngIf="productInfo?.placement_summary">
+                      {{ productInfo.placement_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Stage" *ngIf="productInfo?.stage_summary">
+                      {{ productInfo.stage_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Back" *ngIf="productInfo?.back_summary">
+                      {{ productInfo.back_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Bottom Style" *ngIf="productInfo?.bottomStyle_summary">
+                      {{ productInfo.bottomStyle_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Contrast" *ngIf="productInfo?.inner_contrast_summary">
+                      {{ productInfo.inner_contrast_summary }}
+                    </p>
+                    <p id="val" placement="top" ngbTooltip="Interlining" *ngIf="productInfo?.interlining_summary">
+                      {{ productInfo.interlining_summary }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-12" id="mgram">
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    <h5>Monogram</h5>
+                  </div>
+                  <div class="col">
+                    <p id="val_monogram" *ngIf="productInfo?.monogram_summary">
+                      Yes
+                    </p>
+                    <p id="val_monogram" *ngIf="!productInfo?.monogram_summary">
+                      None
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="selected-panel is-visible">
+          <h6 id="prodName">
+            {{ specificproduct?.name }}
+            <span id="prodPrice" class="float-right" *ngIf="specificproduct?.price">
+              <b>
+                ${{ addMongogramPrice(specificproduct?.price) }} /
+                {{ specificproduct?.prefixAccountNumber
+                }}{{ specificproduct?.postfixAccountNumber }}
+              </b>
+            </span>
+            <span id="prodPrice" class="float-right" *ngIf="!specificproduct?.price">
+              <b>
+                $0 / {{ specificproduct?.prefixAccountNumber
+                }}{{ specificproduct?.postfixAccountNumber }}
+              </b>
+            </span>
+          </h6>
+
+          <!-- <h6 id="resultsFabric">
+          <b>Total Results: {{count}}</b>
+        </h6> -->
+        </div>
+
+        <footer class="build-footer">
+          <div>
+            <button class="btn btn-default-grey" [ngClass]="
+              currentTab == 'Fabric' ? 'prev-step-disable' : 'prev-step-active'
+            " (click)="prevTab()">
+              Prev
+            </button>
+          </div>
+          <p class="price" *ngIf="
+            specificproduct?.price != '' &&
+            specificproduct?.price != null &&
+            specificproduct?.price
+          ">
+            <span class="shirt-total-price" id="shirt-total-price">
+              ${{ specificproduct?.price }}
+            </span>
+          </p>
+          <div>
+            <button *ngIf="currentTab != 'Summary'" class="btn btn-default next-step-active is-pulsing" [ngClass]="
+              currentTab == 'Summary' ? 'next-step-disable' : 'next-step-active'
+            " (click)="nextTab()">
+              Next
+            </button>
+            <button *ngIf="currentTab == 'Summary'" class="btn btn-default next-step-active is-pulsing"
+              (click)="addToCart()">
+              Add to Cart
+            </button>
+          </div>
+        </footer>
+      </div>
+
+      <ng-template #measurment_Video let-c="close" let-d="dismiss">
+        <div class="modal-body px-4">
+          <div class="d-flex justify-content-between" id="btw">
+            <div>
+              <h3 class="text-black">SHIRT SIZE</h3>
+            </div>
+            <div>
+              <span id="c_m1" (click)="d('Close click')">&times;</span>
+            </div>
+          </div>
+
+          <div class="row mb-2" *ngIf="!loader">
+            <div class="col-4 col-md-3">
+              <div *ngFor="let item of sizez; index as i">
+                <p *ngIf="item?.key != 'type'" id="videoLabel" (click)="searchVideo(item)"
+                  onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';"
+                  style="cursor: pointer" [ngStyle]="{
+                  'font-weight':
+                    measurement['key'] == item['key'] ? '600' : '500',
+                  'text-decoration':
+                    measurement['key'] == item['key'] ? 'underline' : 'none'
+                }">
+                  {{ item?.key | uppercase }}
+                </p>
+              </div>
+            </div>
+
+            <div class="col-8 col-md-9">
+              <h3 id="video_name">{{ measurement?.Obj?.title }}</h3>
+              <iframe [src]="videoUrl"></iframe>
+              <p id="video_desc">{{ measurement?.Obj?.description }}</p>
+            </div>
+          </div>
+
+          <div class="row mb-2" *ngIf="loader">
+            <i class="fa fa-spin fa-spinner fa-2x" style="margin: 0px auto"></i>
+            <br />
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="row my-5" *ngIf="loader">
+      <div class="col-md-12 text-center my-5">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <br />
+      </div>
+    </div>
+  </div>
+
+  <ng-template #ModalInfo let-c="close" let-d="dismiss">
+    <div class="modal-header border-bottom-0 p-0">
+      <h3 class="modal-title ml-2 mt-1">{{ infoData.title }}</h3>
+      <span class="cursor-pointer p-3" id="c_m2" (click)="d('Close click')"
+        style="font-size: 50px !important; line-height: 0.3 !important">
+        &times;
+      </span>
+    </div>
+    <img class="mx-2" src="{{ infoData.img }}" alt="" />
+    <p class="mx-2 mt-4 text-center">{{ infoData.text }}</p>
+  </ng-template>

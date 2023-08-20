@@ -1,0 +1,74 @@
+<h3 class="text-black pb-3 text-center">GRAVALDI</h3>
+<h5
+  class="text-black font-weight-bold px-5 pb-0 text-center"
+  style="line-height: normal"
+>
+  YOUR ACCOUNT FOR SHOP GRAVALDI
+</h5>
+<div class="form-group mb-0">
+  <label class="form-label"></label>
+  <input
+    type="text"
+    class="form-control"
+    name="email"
+    [(ngModel)]="loginObj.email"
+    placeholder="Email Address"
+  />
+</div>
+<div class="form-group mb-4">
+  <label class="form-label"></label>
+
+  <div class="d-flex align-items-center">
+    <input
+      [type]="signInShowPass ? 'text' : 'password'"
+      [ngStyle]="{ border: signInInvalidPassword ? '1px solid red' : '' }"
+      class="form-control"
+      name="password"
+      [(ngModel)]="loginObj.password"
+      placeholder="Password"
+    />
+
+    <div
+      *ngIf="loginObj.password"
+      (click)="signInShowPass = !signInShowPass"
+      style="margin: 2px 0 0 -30px; cursor: pointer"
+    >
+      <i *ngIf="signInShowPass" class="fas fa-eye-slash"></i>
+      <i *ngIf="!signInShowPass" class="fas fa-eye"></i>
+    </div>
+  </div>
+
+  <small *ngIf="signInInvalidPassword" class="form-text text-muted text-left"
+    >Must Be 6 Characters At Least</small
+  >
+</div>
+<div class="form-group d-flex flex-row justify-content-between mb-0">
+  <label
+    class="form-check text-primary"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    ><input type="checkbox" class="form-check-input" name="" id="" /> Remember
+    Me</label
+  >
+  <a
+    routerLink="/forgot-password"
+    class="form-check float-right text-primary cursor-pointer"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    >Forgot Password?</a
+  >
+</div>
+<button type="submit" class="btn btn-primary form-control" (click)="login()">
+  SIGN IN
+</button>
+<div class="form-group d-flex flex-row justify-content-center mt-2">
+  <label
+    class="form-check text-muted"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    >Not A Member?
+  </label>
+  <a
+    routerLink="/register"
+    class="form-check float-right text-primary pl-1 cursor-pointer"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    >Register</a
+  >
+</div>

@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+// #div-id {
+//   border: 2px solid blue;
+//   width: 100%;
+//   height: 471px;
+//   position: relative;
+//   overflow: hidden;
+// }
+
+// #iframe-id {
+//   position: absolute;
+//   top: -550px;
+//   left: -2px;
+//   width: 100%;
+//   height: 200vh;
+// }
+:host ::ng-deep .footer-wrapper {
+  width: 100%;
+  font-weight: 500;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  // padding: 10px 0 15px;
+
+  // footer 1
+  .footer-1 {
+    background-color: #f1f1f1;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: left;
+  }
+
+  // footer 2
+  .absolute-footer {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.9em;
+    padding: 20px 0 15px;
+    background-color: #e2e2e2;
+  }
+
+  .payment-icons .payment-icon svg {
+    height: 20px;
+    vertical-align: middle;
+    width: auto !important;
+  }
+
+  svg:not(:root) {
+    overflow: hidden;
+  }
+
+  .payment-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: inline-block;
+    margin: 3px 3px 0;
+    opacity: 0.6;
+    padding: 3px 5px 5px;
+    transition: opacity 0.3s;
+  }
+
+  .is-divider {
+    background-color: rgba(0, 0, 0, 0.1);
+    display: block;
+    height: 3px;
+    margin: 1em 0;
+    max-width: 30px;
+    width: 100%;
+  }
+}
+
+.email-input {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.09);
+  border-radius: 99px;
+  box-shadow: none;
+  color: currentColor !important;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  width: 330px;
+  height: 39px;
+  padding: 0 14px;
+  margin-top: 4px;
+}

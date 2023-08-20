@@ -1,0 +1,57 @@
+<div class="row justify-content-center bg-primary text-white py-3">
+<div class="col-md-4 col-8 px-3 d-flex flex-column justify-content-between">
+  <div class="mb-5">
+    <h1 class="font-weight-semibold">Contact Us</h1>
+    <h4>Fill the form and our team will get back to you within 24hours.</h4>
+  </div>
+  <div class="d-flex flex-column justify-content-between flex-fill">
+    <div class="d-flex align-items-center my-3">
+      <img class="siz2 float-left" src="assets/phone.png" alt="">
+      <p class="ml-5 mb-0 w-50">00961-1-375771</p>
+    </div>
+    <div class="d-flex align-items-center my-3">
+      <img class="siz2 float-left" src="assets/mail.png" alt="">
+      <p class="ml-5 mb-0 w-50">info2gravaldi.com</p>
+    </div>
+    <div class="d-flex align-items-center my-3">
+      <img class="siz2 float-left" src="assets/location.png" alt="">
+      <p class="ml-5 mb-0 w-50">Beirut Lebanon, Istiklal Street, Rana Building, Ground Floor.</p>
+    </div>
+  </div>
+  <!-- <div class="flex-fill">
+  </div> -->
+  <div class="mt-5">
+    <div class="row">
+      <div class="col-7">
+        <h5 class="font-weight-semibold text-center">Contact Us On</h5>
+      </div>
+      <div class="col-12"></div>
+      <div class="col-2"><img class="siz" src="assets/fb.png" alt=""></div>
+      <div class="col-2"><img class="siz" src="assets/twitter.png" alt=""></div>
+      <div class="col-2"><img class="siz" src="assets/instagram.png" alt=""></div>
+      <div class="col-2"><img class="siz" src="assets/pinterest.png" alt=""></div>
+    </div>
+  </div>
+</div>
+<div class="col-md-4 col-8 px-3 py-4 bg-white">
+  <form >
+    <div class="form-group mb-4">
+        <label class="form-label text-primary font-weight-bolder">Your Name</label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="formObj.name" placeholder="Alex Fernando">
+        <!-- <small *ngIf="true" class="form-text text-muted text-left">Some error</small> -->
+    </div>
+    <div class="form-group mb-4">
+        <label class="form-label text-primary font-weight-bolder">Email Address</label>
+        <input type="text" class="form-control" name="email" [(ngModel)]="formObj.email" placeholder="alex.fernando@mail.com">
+        <!-- <small *ngIf="true" class="form-text text-muted text-left">Some error</small> -->
+    </div>
+    <div class="form-group mb-2">
+        <label class="form-label text-primary font-weight-bolder">Message</label>
+        <textarea class="form-control" rows="8" name="message" [(ngModel)]="formObj.message" placeholder="Message"></textarea>
+    </div>
+
+    <button type="submit" (click)="submit()" class="btn btn-primary form-control float-right" style="width: 200px !important;">Send Message</button>
+
+  </form>
+</div>
+</div>

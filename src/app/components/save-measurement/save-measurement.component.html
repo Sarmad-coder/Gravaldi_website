@@ -1,0 +1,198 @@
+<div class="d-flex justify-content-between mb-4 w-100">
+  <div style="font-size: 24px; font-weight: 700">
+    {{ populateItem ? "Edit" : "Create" }} Measurement
+  </div>
+
+  <!-- <div class="ngneat-close-dialog">
+    <svg viewBox="0 0 329.26933 329" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fill="currentColor"
+        d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"
+      ></path>
+    </svg>
+  </div> -->
+</div>
+
+<div class="row my-5" *ngIf="loader">
+  <div class="col-md-12 text-center my-5">
+    <i class="fa fa-spin fa-spinner fa-2x"></i> <br />
+  </div>
+</div>
+
+<ng-container  *ngIf="!loader">
+
+<div class="row" id="sizeDiv">
+  <div class="col-md-5 pr-3" id="lftside">
+    <label for="fit_1" class="m-0">Name</label>
+    <input
+      name="name"
+      id="name"
+      type="text"
+      class="form-control"
+      [(ngModel)]="form.name"
+    />
+
+    <label for="fit_1" class="m-0 mt-2">Fit</label>
+    <select
+      name="fit_1"
+      id="fit_1"
+      class="form-control"
+      [(ngModel)]="form.fit"
+      (change)="defalt(form.fit)"
+    >
+      <option
+        *ngFor="let item of ext.fitData; index as j"
+        value="{{ item?.value }}"
+      >
+        {{ item?.value }}
+      </option>
+    </select>
+
+    <!-- <label for="fit_1" class="m-0 mt-2">Size Type</label>
+    <select
+      name="fit_1"
+      id="fit_1"
+      class="form-control"
+      [(ngModel)]="form.size"
+      
+    >
+      <option
+        *ngFor="let item of ext.sizeData; index as j"
+        value="{{ item?.title }}"
+      >
+        {{ item?.title }}
+      </option>
+    </select> -->
+
+    <!-- <div class="col-12 col-md-12 p-0 mt-2">
+        <label for="size_1" class="m-0">Size</label>
+        <select
+          name="size_1"
+          id="size_1"
+          class="form-control"
+          [(ngModel)]="sizeObj.sizeType"
+          (change)="defalt(sizeObj.sizeType)"
+        >
+          <option
+            *ngFor="let item of ext.sizeData; index as j"
+            value="{{ item?._id }}"
+          >
+            {{ item?.title }}
+          </option>
+        </select>
+      </div> -->
+  </div>
+
+  <div class="col-md-7" id="rghsid">
+    <ng-container #name *ngIf="!sizeLoader">
+      <h5 id="h5" style="margin-left: 10px">SIZE DETAILS</h5>
+
+      <div class="row m-0" *ngFor="let item of sizez; index as i">
+        <div class="col-4 col-md-4 col-lg-3">
+          <label
+            for="{{ item.value }}"
+            id="meas_label"
+            (click)="
+              open(measurment_Video, { windowClass: 'modal-lg animate' })
+            "
+          >
+            <a (click)="searchVideo(item)">{{ item?.key | uppercase }}</a>
+          </label>
+        </div>
+
+        <div
+          class="col-8 col-md-8 col-lg-9 p-0"
+          id="valsid"
+          *ngIf="item?.key != 'type'"
+        >
+          <div class="row">
+            <div class="col-6 p-0">
+              <input
+                type="number"
+                step=".5"
+                min="0"
+                id="{{ item.value }}"
+                [ngStyle]="{
+                  border: item.selected ? '1px solid red' : ''
+                }"
+                class="form-control sizeInput"
+                name="{{ item.key }}"
+                [(ngModel)]="item.value"
+                placeholder="size"
+              />
+            </div>
+            <div class="col-6 text-right p-0">
+              <button
+                class="btn minus"
+                type="button"
+                [disabled]="
+                  item.value == '' || item.value == 0 || item.value <= 0
+                "
+                (click)="minusValue(i)"
+              >
+                –
+              </button>
+              <button class="btn plus" type="button" (click)="plusValue(i)">
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="row m-0" *ngIf="sizeLoader">
+      <div class="col-md-12 text-center righLoader">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end" style="margin: 30px -12px 0 0">
+  <button class="btn btn-secondary mr-2" (click)="close.next()">Close</button>
+  <button class="btn btn-primary" (click)="save()">Save</button>
+</div>
+
+<ng-template #measurment_Video let-c="close" let-d="dismiss">
+  <div class="modal-body px-4">
+    <div class="d-flex justify-content-between" id="btw">
+      <div>
+        <h3 class="text-black">SHIRT SIZE</h3>
+      </div>
+      <div>
+        <span id="c_m1" (click)="d('Close click')">&times;</span>
+      </div>
+    </div>
+
+    <div class="row mb-2" *ngIf="!loader">
+      <div class="col-4 col-md-3">
+        <div *ngFor="let item of sizez; index as i">
+          <p
+            *ngIf="item?.key != 'type'"
+            id="videoLabel"
+            (click)="searchVideo(item)"
+            onmouseover="this.style.textDecoration='underline';"
+            onmouseout="this.style.textDecoration='none';"
+            style="cursor: pointer"
+            [ngStyle]="{
+              'font-weight': measurement['key'] == item['key'] ? '600' : '500',
+              'text-decoration':
+                measurement['key'] == item['key'] ? 'underline' : 'none'
+            }"
+          >
+            {{ item?.key | uppercase }}
+          </p>
+        </div>
+      </div>
+
+      <div class="col-8 col-md-9">
+        <h3 id="video_name">{{ measurement?.Obj?.title }}</h3>
+        <iframe [src]="videoUrl"></iframe>
+        <p id="video_desc">{{ measurement?.Obj?.description }}</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+</ng-container>

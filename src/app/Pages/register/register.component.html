@@ -1,0 +1,106 @@
+<h3 class="text-black pb-3 text-center">GRAVALDI</h3>
+<h5
+  class="text-black font-weight-bold px-5 pb-0 text-center"
+  style="line-height: normal"
+>
+  CREATE AN ACCOUNT
+</h5>
+<small
+  class="text-muted form-text px-4 pb-0 text-center"
+  style="line-height: normal; font-size: x-small"
+  >Create Your Gravaldi Account And Get First Access To The Our Products List,
+  Customize Shirts As You Like And Get Them.</small
+>
+<div class="form-group mb-0">
+  <label class="form-label"></label>
+  <input
+    type="text"
+    class="form-control"
+    name="firstName"
+    [(ngModel)]="signupObj.firstName"
+    placeholder="First Name"
+  />
+</div>
+<div class="form-group mb-0">
+  <label class="form-label"></label>
+  <input
+    type="text"
+    class="form-control"
+    name="lastName"
+    [(ngModel)]="signupObj.lastName"
+    placeholder="Last Name"
+  />
+</div>
+<div class="form-group mb-0">
+  <label class="form-label"></label>
+  <select
+    class="form-control"
+    name="country"
+    [(ngModel)]="signupObj.house.country"
+  >
+    <option
+      *ngFor="let item of countries; index as i"
+      value="{{ item?.country?._id }}"
+    >
+      {{ item?.country?.name }}
+    </option>
+  </select>
+</div>
+<div class="form-group mb-0">
+  <label class="form-label"></label>
+  <input
+    type="text"
+    class="form-control"
+    name="email"
+    [(ngModel)]="signupObj.email"
+    placeholder="Email Address"
+  />
+</div>
+<div class="form-group mb-4">
+  <label class="form-label"></label>
+  <div class="d-flex align-items-center">
+    <input
+      [type]="signUpShowPass ? 'text' : 'password'"
+      [ngStyle]="{ border: signupInvalidPassword ? '1px solid red' : '' }"
+      class="form-control"
+      name="password"
+      [(ngModel)]="signupObj.password"
+      placeholder="Password"
+    />
+    <div
+      *ngIf="signupObj.password"
+      (click)="signUpShowPass = !signUpShowPass"
+      style="margin: 2px 0 0 -30px; cursor: pointer"
+    >
+      <i *ngIf="signUpShowPass" class="fas fa-eye-slash"></i>
+      <i *ngIf="!signUpShowPass" class="fas fa-eye"></i>
+    </div>
+  </div>
+  <small *ngIf="signupInvalidPassword" class="form-text text-muted text-left"
+    >Must Be 6 Characters At Least</small
+  >
+</div>
+<div class="form-group d-flex flex-row justify-content-between mb-0">
+  <label
+    class="form-check text-primary"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    ><input type="checkbox" class="form-check-input" name="" id="" /> Remember
+    Me</label
+  >
+</div>
+<button type="submit" class="btn btn-primary form-control" (click)="signup()">
+  SIGN UP
+</button>
+<div class="form-group d-flex flex-row justify-content-center mt-2">
+  <label
+    class="form-check text-muted"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    >Already A Member?
+  </label>
+  <a
+    routerLink="/login"
+    class="form-check float-right text-primary pl-1 cursor-pointer"
+    style="font-weight: 600; font-size: x-small; line-height: 2.4"
+    >Sign In</a
+  >
+</div>

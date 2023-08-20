@@ -1,0 +1,164 @@
+<div class="row image-fluid col-12 bg-image img1"
+  [style.background-image]="'url('+baseUrl+'/'+shopByweb?.first_section?.image+')'">
+  <div class="col-md-12">
+    <div class="row col-md-10 justify-content-center">
+      <div class="col-lg-12 col-md-12 col-12 my-auto sec_1_text">
+        <h5 class="my-auto pb-4 text-white ">New Arrivals</h5>
+        <h1 class="my-auto font-weight-bold pb-4 text-white">Get Your Perfect <br> Fit From here</h1>
+        <div class="row pt-2  mx-auto">
+          <div>
+            <button type="button" class="btn btn-primary"
+              style="border-radius: 0px; border: 1px solid white; padding-inline: 35px; color: #ffffff; background-color: #000000;">SHOP
+              NOW</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-12 sec_1_socialMedia">
+        <div class="row pt-2 mx-auto">
+          <i class="fab fa-facebook-f text-white px-3" style="font-size: 21px; cursor: pointer; " aria-hidden="true"></i>
+          <i class="fab fa-instagram text-white px-3" style="font-size: 21px; cursor: pointer;" aria-hidden="true"></i>
+          <i class="fab fa-pinterest-p text-white px-3" style="font-size: 21px; cursor: pointer;" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row bg-image">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 image-fluid img2"
+    [style.background-image]="'url('+baseUrl+'/'+shopByweb?.middle_section?.first_promotionArea?.image+')'">
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 my-auto  ">
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 col-lg-6 col-sm-12 col-12 p-3 sec2">
+        <h2 class="my-auto pb-4 font-weight-bold" style="color: #000000;">
+          {{shopByweb?.middle_section?.first_promotionArea?.title}}</h2>
+        <p class="my-auto pb-4" style="color: #000000;font-size: 15px;">
+          {{shopByweb?.middle_section?.first_promotionArea?.subtitle}}</p>
+        <div class="row pt-2  mx-auto">
+          <div>
+            <a style="border-radius: 0px; border:none;  color: #000000; font-weight: bold;">SHOP
+              NOW &nbsp; <i class="fas fa-arrow-right"></i> </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </div>
+</div>
+
+<div class="row bg-image">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 my-auto ">
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 col-lg-6 col-sm-12 col-12 p-3 sec2">
+        <h2 class="my-auto pb-4 font-weight-bold" style="color: #000000;">
+          {{shopByweb?.middle_section?.second_promotionArea?.title}}</h2>
+        <p class="my-auto pb-4" style="color: #000000;font-size: 15px;">
+          {{shopByweb?.middle_section?.second_promotionArea?.subtitle}}</p>
+        <div class="row pt-2  mx-auto">
+
+          <div>
+            <a style="border-radius: 0px; border:none;  color: #000000; font-weight: bold;">SHOP
+              NOW &nbsp; <i class="fas fa-arrow-right"></i> </a>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 image-fluid img3"
+    [style.background-image]="'url('+baseUrl+'/'+shopByweb?.middle_section?.second_promotionArea?.image+')'">
+  </div>
+</div>
+
+<div class="container mt-5 pt-5">
+  <div class="row mx-auto justify-content-center">
+    <h2 class="text-center font-weight-bold" style="color: #a99475;">OUR PRODUCTS</h2>
+  </div>
+  <nav class="navbar  navbar-light  navbar-expand-md">
+    <div class="container">
+      <div class="collapse navbar-collapse justify-content-center" id="main-nav-collapse">
+        <ul class="navbar-nav  " style="font-size: 18px; font-weight: bold;">
+          <li class="nav-item px-3" Button (click)="selectFilter('All')">
+            <a class="nav-link active" *ngIf="tabName=='All'">All</a>
+            <a class="nav-link " *ngIf="tabName!='All'">All</a>
+          </li>
+          <li class="nav-item px-3" Button (click)="selectFilter('Business')">
+            <a class="nav-link active" *ngIf="tabName=='Business'">Business</a>
+            <a class="nav-link " *ngIf="tabName!='Business'">Business</a>
+          </li>
+          <li class="nav-item px-3" Button (click)="selectFilter('Formal')">
+            <a class="nav-link active" *ngIf="tabName=='Formal'">Formal</a>
+            <a class="nav-link " *ngIf="tabName!='Formal'">Formal</a>
+          </li>
+          <li class="nav-item px-3" Button (click)="selectFilter('Casual')">
+            <a class="nav-link active" *ngIf="tabName=='Casual'">Casual</a>
+            <a class="nav-link " *ngIf="tabName!='Casual'">Casual</a>
+          </li>
+          <li class="nav-item px-3" Button (click)="selectFilter('Accessories')">
+            <a class="nav-link active" *ngIf="tabName=='Accessories'">Accessories</a>
+            <a class="nav-link " *ngIf="tabName!='Accessories'">Accessories</a>
+          </li>
+        </ul>
+      </div>s
+    </div>
+  </nav>
+  <div *ngIf="loading" class="text-center m-4 container">
+    <i class="fa fa-spin fa-spinner fa-2x"></i> <br />
+  </div>
+  <div *ngIf="!loading" class="row mt-2 mx-auto justify-content-center">
+    <p *ngIf="productList?.length < 1">No Products found.</p>
+    <div class=" p-3" *ngFor="let item of productList" style="cursor: pointer;" (click)="selectedProduct(item?._id)">
+      <div class="column  p-4 col-lg-12" style="border-radius: 3px;width: 230px; background-color: #F4F4F4;">
+        <img *ngIf="item?.image !=null" src="{{baseUrl}}/{{item?.image}}" class="card-img-top productImage" alt="...">
+        <img *ngIf="item?.image ==null" src="../../assets/favicon_bigsize.png" class="card-img-top productImage" alt="...">
+      </div>
+      <h5 class="pt-2" style="margin: 1px; font-weight: 500; width: 190px;">{{item?.name}}</h5>
+      <p style="color: grey;">$ {{item?.price}}.00</p>
+    </div>
+  </div>
+  <div *ngIf="loadingbtn" class="text-center m-4 container">
+    <i class="fa fa-spin fa-spinner fa-2x"></i> <br />
+  </div>
+  <div *ngIf="!loadingbtn " class="row mx-auto justify-content-center mt-4 mb-5">
+    <button *ngIf="loadmore && productList?.length > 0" type="button" routerLink="/productlist" class="btn btn-primary"
+      style="border-radius: 0px; border: 1px solid white; padding-inline: 40px; color: #ffffff; background-color: #AA9475;">View
+      All
+    </button>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: #F4F4F4;">
+  <div class="row mx-auto justify-content-center ">
+    <h2 class="text-center" style="color: #AA9475; font-weight: bold;">
+      {{shopByweb?.middle_section?.last_section?.title}}</h2>
+  </div>
+  <div class="row mx-auto justify-content-center">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-11 pt-4 text-center">
+      <img class="p-4" src='{{baseUrl}}/{{shopByweb?.last_section?.firstColumn?.image}}' alt="jsfdgh">
+
+      <h5 class="my-auto font-weight-bold  text-dark p-3  ">{{shopByweb?.last_section?.firstColumn?.title}}</h5>
+      <p class="my-auto text-dark  py-3">{{shopByweb?.last_section?.firstColumn?.subtitle}}</p>
+
+    </div>
+    <span class="verticleLine"></span>
+    <!-- <div class="v1"></div> -->
+    <div class="col-lg-3 col-md-3 col-sm-12 col-11 pt-4 text-center">
+      <img class="p-4" src='{{baseUrl}}/{{shopByweb?.last_section?.middleColumn?.image}}' alt="jsfdgh">
+
+      <h5 class="my-auto font-weight-bold text-dark p-3  "> {{shopByweb?.last_section?.middleColumn?.title}}</h5>
+      <p class="my-auto text-dark  py-3">{{shopByweb?.last_section?.middleColumn?.subtitle}}</p>
+
+    </div>
+    <span class="verticleLine"></span>
+    <div class="col-lg-3 col-md-3 col-sm-11 col-11 pt-4 text-center">
+      <img class="p-4" src='{{baseUrl}}/{{shopByweb?.last_section?.lastColumn?.image}}' alt="jsfdgh">
+      <h5 class="my-auto font-weight-bold text-dark p-3  ">{{shopByweb?.last_section?.lastColumn?.title}}</h5>
+      <p class="my-auto text-dark  py-3">{{shopByweb?.last_section?.lastColumn?.subtitle}}</p>
+    </div>
+  </div>
+
+</div>
